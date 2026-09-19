@@ -143,30 +143,62 @@ export default function CashierPage() {
     }
   };
 
-  // Check current session
+  const CASHIER_CACHE_KEY = "xian_cashier_cached";
+  const CASHIER_TOKEN_KEY = "xian_cashier_token";
+
+  // Check current session with dual persistence
   const checkSession = async () => {
     try {
       setLoadingSession(true);
-      const res = await fetch("/api/auth/me");
+      const headers: Record<string, string> = {};
+      if (typeof window !== "undefined") {
+        const savedToken = localStorage.getItem(CASHIER_TOKEN_KEY);
+        if (savedToken) {
+          headers["x-staff-auth"] = savedToken;
+          headers["Authorization"] = `Bearer ${savedToken}`;
+        }
+      }
+      const res = await fetch("/api/auth/me", {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (res.ok && data.authenticated && (data.user.role === "cashier" || data.user.role === "super_admin")) {
-        setCashier({
+        const cashierData = {
           id: data.user.id,
           name: data.user.name,
           username: data.user.username || "",
           branchName: data.user.branchName || "Main Branch",
-        });
+        };
+        setCashier(cashierData);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(CASHIER_CACHE_KEY, JSON.stringify(cashierData));
+          if (data.token) localStorage.setItem(CASHIER_TOKEN_KEY, data.token);
+        }
       } else {
-        setCashier(null);
+        if (typeof window !== "undefined" && !localStorage.getItem(CASHIER_TOKEN_KEY)) {
+          setCashier(null);
+        }
       }
     } catch {
-      setCashier(null);
+      // Keep cached session on connection glitch
     } finally {
       setLoadingSession(false);
     }
   };
 
   useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const cachedCashier = localStorage.getItem(CASHIER_CACHE_KEY);
+        if (cachedCashier) {
+          setCashier(JSON.parse(cachedCashier));
+          setLoadingSession(false);
+        }
+      }
+    } catch (e) {
+      console.warn("Cashier cache read error:", e);
+    }
     checkSession();
   }, []);
 
@@ -180,6 +212,7 @@ export default function CashierPage() {
       const res = await fetch("/api/auth/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           role: "cashier",
           username: usernameInput.trim(),
@@ -189,6 +222,10 @@ export default function CashierPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setCashier(data.user);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(CASHIER_CACHE_KEY, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem(CASHIER_TOKEN_KEY, data.token);
+        }
       } else {
         setLoginError(data.error || "Invalid username or security PIN");
       }
@@ -200,7 +237,11 @@ export default function CashierPage() {
   };
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(CASHIER_CACHE_KEY);
+      localStorage.removeItem(CASHIER_TOKEN_KEY);
+    }
     setCashier(null);
     resetPOS();
   };

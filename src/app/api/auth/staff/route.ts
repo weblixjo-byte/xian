@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { dbService } from "@/lib/db";
-import { signToken, TOKEN_COOKIE_NAME, PERMANENT_COOKIE_MAX_AGE } from "@/lib/auth";
+import { signToken, TOKEN_COOKIE_NAME, PERMANENT_COOKIE_MAX_AGE, getCookieOptions } from "@/lib/auth";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import bcrypt from "bcryptjs";
 
@@ -48,6 +48,7 @@ export async function POST(req: Request) {
 
       const response = NextResponse.json({
         success: true,
+        token,
         user: {
           id: cashier._id,
           role: "cashier",
@@ -58,13 +59,8 @@ export async function POST(req: Request) {
       });
 
       response.cookies.set({
-        name: TOKEN_COOKIE_NAME,
+        ...getCookieOptions(req),
         value: token,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: PERMANENT_COOKIE_MAX_AGE,
-        path: "/",
       });
 
       return response;
@@ -119,6 +115,7 @@ export async function POST(req: Request) {
 
       const response = NextResponse.json({
         success: true,
+        token,
         user: {
           id: admin._id,
           role: "super_admin",
@@ -128,13 +125,8 @@ export async function POST(req: Request) {
       });
 
       response.cookies.set({
-        name: TOKEN_COOKIE_NAME,
+        ...getCookieOptions(req),
         value: token,
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: PERMANENT_COOKIE_MAX_AGE,
-        path: "/",
       });
 
       return response;

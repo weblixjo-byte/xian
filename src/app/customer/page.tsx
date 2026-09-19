@@ -184,17 +184,23 @@ export default function CustomerPage() {
         if (typeof window !== "undefined") {
           localStorage.setItem(CUSTOMER_CACHE_KEY, JSON.stringify(data.customer));
           localStorage.setItem(CUSTOMER_ID_KEY, data.customer.id);
+          if (data.token) localStorage.setItem(CUSTOMER_TOKEN_KEY, data.token);
           if (data.transactions) {
             localStorage.setItem(TRANSACTIONS_CACHE_KEY, JSON.stringify(data.transactions));
           }
         }
       } else {
-        if (typeof window !== "undefined" && !localStorage.getItem(CUSTOMER_ID_KEY)) {
+        if (
+          typeof window !== "undefined" &&
+          !localStorage.getItem(CUSTOMER_ID_KEY) &&
+          !localStorage.getItem(CUSTOMER_TOKEN_KEY) &&
+          !localStorage.getItem(CUSTOMER_CACHE_KEY)
+        ) {
           setCustomer(null);
         }
       }
     } catch (e) {
-      console.error(e);
+      console.warn("Dashboard sync notice:", e);
     } finally {
       setLoading(false);
     }
@@ -548,7 +554,7 @@ export default function CustomerPage() {
 
   // Logout
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     if (typeof window !== "undefined") {
       localStorage.removeItem(CUSTOMER_CACHE_KEY);
       localStorage.removeItem(CUSTOMER_ID_KEY);

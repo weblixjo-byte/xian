@@ -260,7 +260,9 @@ export default function AdminPage() {
   // Language State: English by default
   const [lang, setLang] = useState<"en" | "ar">("en");
 
-  // Authentication State
+  // Authentication State with permanent dual persistence
+  const ADMIN_CACHE_KEY = "xian_admin_cached";
+  const ADMIN_TOKEN_KEY = "xian_admin_token";
   const [admin, setAdmin] = useState<{ id: string; name: string; email: string } | null>(null);
   const [loadingSession, setLoadingSession] = useState(true);
 
@@ -359,19 +361,36 @@ export default function AdminPage() {
 
   const t = i18n.en;
 
-  // Check Admin Session
+  // Check Admin Session with dual persistence
   const checkAdminSession = async () => {
     try {
       setLoadingSession(true);
-      const res = await fetch("/api/auth/me");
+      const headers: Record<string, string> = {};
+      if (typeof window !== "undefined") {
+        const savedToken = localStorage.getItem(ADMIN_TOKEN_KEY);
+        if (savedToken) {
+          headers["x-staff-auth"] = savedToken;
+          headers["Authorization"] = `Bearer ${savedToken}`;
+        }
+      }
+      const res = await fetch("/api/auth/me", {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (res.ok && data.authenticated && data.user.role === "super_admin") {
         setAdmin(data.user);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+        }
       } else {
-        setAdmin(null);
+        if (typeof window !== "undefined" && !localStorage.getItem(ADMIN_TOKEN_KEY)) {
+          setAdmin(null);
+        }
       }
     } catch {
-      setAdmin(null);
+      // Keep cached session on connection glitch
     } finally {
       setLoadingSession(false);
     }
@@ -430,6 +449,17 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    try {
+      if (typeof window !== "undefined") {
+        const cachedAdmin = localStorage.getItem(ADMIN_CACHE_KEY);
+        if (cachedAdmin) {
+          setAdmin(JSON.parse(cachedAdmin));
+          setLoadingSession(false);
+        }
+      }
+    } catch (e) {
+      console.warn("Admin cache read error:", e);
+    }
     checkAdminSession();
   }, []);
 
@@ -452,6 +482,7 @@ export default function AdminPage() {
       const res = await fetch("/api/auth/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           role: "super_admin",
           username: emailInput.trim(),
@@ -462,6 +493,10 @@ export default function AdminPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setAdmin(data.user);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(ADMIN_CACHE_KEY, JSON.stringify(data.user));
+          if (data.token) localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+        }
       } else {
         setLoginError(data.error || "Invalid administrator credentials");
       }
@@ -473,7 +508,11 @@ export default function AdminPage() {
   };
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(ADMIN_CACHE_KEY);
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
+    }
     setAdmin(null);
   };
 

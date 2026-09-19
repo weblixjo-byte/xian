@@ -21,30 +21,52 @@ export function verifyToken(token: string): AuthSession | null {
   }
 }
 
+export function getCookieOptions(req?: Request) {
+  let isSecure = false;
+  if (req) {
+    const proto = req.headers.get("x-forwarded-proto");
+    isSecure = proto === "https";
+  }
+  return {
+    name: TOKEN_COOKIE_NAME,
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: "lax" as const,
+    maxAge: PERMANENT_COOKIE_MAX_AGE,
+    path: "/",
+  };
+}
+
 export async function getSession(req?: Request): Promise<AuthSession | null> {
   try {
-    // 1. Check Authorization header or x-customer-auth if req provided
+    // 1. Check Authorization header or custom auth headers if req provided
     if (req) {
-      const authHeader = req.headers.get("x-customer-auth") || req.headers.get("authorization");
+      const authHeader =
+        req.headers.get("x-staff-auth") ||
+        req.headers.get("x-customer-auth") ||
+        req.headers.get("authorization");
+
       if (authHeader) {
         const token = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : authHeader;
         const verified = verifyToken(token);
         if (verified) return verified;
       }
 
-      // Fallback: check x-customer-id if token is delayed
-      const customerId = req.headers.get("x-customer-id");
+      // Fallback: check x-customer-id or x-staff-id if token is delayed
+      const customerId = req.headers.get("x-customer-id") || req.headers.get("x-staff-id");
       if (customerId) {
         const { dbService } = await import("./db");
         const user = await dbService.findUserById(customerId);
-        if (user && user.role === "customer") {
+        if (user) {
           return {
             userId: user._id,
-            role: "customer",
+            role: user.role,
             name: user.name,
             email: user.email,
             phone: user.phone,
             tier: user.tier,
+            username: user.username,
+            branchName: user.branchName,
           };
         }
       }
