@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       customerPhone: customer.phone,
       cashierId: session.userId,
       cashierName: session.name,
-      branchName: session.branchName || "Main Roastery",
+      branchName: session.branchName || "Main Branch",
       points: -points,
       balanceAfter: newBalance,
       rewardTitle: rewardTitle || "Loyalty Points Discount",
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
         oldBalance,
         newBalance,
         cashierName: session.name,
-        branchName: session.branchName || "Main Roastery",
+        branchName: session.branchName || "Main Branch",
         createdAt: tx.createdAt,
       },
     });

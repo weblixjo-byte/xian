@@ -694,7 +694,7 @@ export default function CustomerPage() {
                     type="text"
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
-                    placeholder="Full Name"
+                    placeholder=""
                     className="glass-input w-full font-sans"
                     required
                     autoFocus
@@ -709,7 +709,7 @@ export default function CustomerPage() {
                     type="email"
                     value={customEmail}
                     onChange={(e) => setCustomEmail(e.target.value)}
-                    placeholder="name@gmail.com"
+                    placeholder=""
                     className="glass-input w-full font-sans"
                     required
                   />

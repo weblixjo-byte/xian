@@ -88,8 +88,8 @@ export default function CashierPage() {
   const [receipt, setReceipt] = useState<ReceiptData | null>(null);
 
   // Redemption State
-  const [redeemPoints, setRedeemPoints] = useState<string>("80");
-  const [rewardTitle, setRewardTitle] = useState<string>("Specialty Flat White / Latte");
+  const [redeemPoints, setRedeemPoints] = useState<string>("");
+  const [rewardTitle, setRewardTitle] = useState<string>("");
   const [redeemLoading, setRedeemLoading] = useState(false);
   const [redeemError, setRedeemError] = useState<string | null>(null);
   const [activeRewards, setActiveRewards] = useState<{ _id: string; title: string; pointsRequired: number; category: string }[]>([]);
@@ -153,8 +153,8 @@ export default function CashierPage() {
         setCashier({
           id: data.user.id,
           name: data.user.name,
-          username: data.user.username || "salah",
-          branchName: data.user.branchName || "Main Roastery",
+          username: data.user.username || "",
+          branchName: data.user.branchName || "Main Branch",
         });
       } else {
         setCashier(null);
@@ -399,7 +399,7 @@ export default function CashierPage() {
                   type="text"
                   value={usernameInput}
                   onChange={(e) => setUsernameInput(e.target.value)}
-                  placeholder="e.g. salah"
+                  placeholder=""
                   className="glass-input w-full font-sans"
                   required
                 />
@@ -414,7 +414,7 @@ export default function CashierPage() {
                   inputMode="numeric"
                   value={pinInput}
                   onChange={(e) => setPinInput(e.target.value)}
-                  placeholder="••••"
+                  placeholder=""
                   className="glass-input w-full text-center font-mono text-xl tracking-widest font-sans"
                   required
                 />
@@ -751,7 +751,7 @@ export default function CashierPage() {
                     type="text"
                     value={qrQuery}
                     onChange={(e) => setQrQuery(e.target.value)}
-                    placeholder="Customer QR code..."
+                    placeholder=""
                     className="glass-input flex-1 text-xs font-mono"
                   />
                   <button
@@ -1011,20 +1011,14 @@ export default function CashierPage() {
                           setRedeemPoints(matched.pointsRequired.toString());
                         }
                       }}
-                      placeholder="Select Reward or Reason..."
+                      placeholder="Select Reward..."
                       options={[
-                        ...(activeRewards.length > 0
-                          ? activeRewards.map((r) => ({
-                              value: r.title,
-                              label: r.title,
-                              badge: `${r.pointsRequired} pts`,
-                              subtitle: r.category,
-                            }))
-                          : [
-                              { value: "Specialty Flat White / Latte", label: "Specialty Flat White / Latte", badge: "80 pts" },
-                              { value: "Kyoto Cold Brew", label: "Kyoto Cold Brew", badge: "120 pts" },
-                              { value: "Fresh French Pistachio Croissant", label: "Fresh French Pistachio Croissant", badge: "90 pts" },
-                            ]),
+                        ...activeRewards.map((r) => ({
+                          value: r.title,
+                          label: r.title,
+                          badge: `${r.pointsRequired} pts`,
+                          subtitle: r.category,
+                        })),
                         { value: "Custom Bill Discount", label: "Custom Bill Discount", subtitle: "Manual adjustment" },
                       ]}
                     />

@@ -15,19 +15,15 @@ export async function POST(req: Request) {
 
     // Step 1: Request OTP
     if (step === "request_otp" || !otp) {
-      // In development/demo mode, provide simulated OTP for instant testing
-      const demoOtp = "123456";
       return NextResponse.json({
         success: true,
-        message: `OTP sent to ${cleanPhone}`,
-        demoOtp,
+        message: `Verification code sent to ${cleanPhone}`,
       });
     }
 
     // Step 2: Verify OTP
-    // For demo/production flexibility, allow 123456 or any 6-digit code
-    if (otp !== "123456" && otp.length !== 6) {
-      return NextResponse.json({ error: "Invalid OTP. Use 123456 for demo" }, { status: 400 });
+    if (!otp || otp.length !== 6) {
+      return NextResponse.json({ error: "Invalid verification code" }, { status: 400 });
     }
 
     let user = await dbService.findUserByPhone(cleanPhone);

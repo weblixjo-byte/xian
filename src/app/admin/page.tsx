@@ -69,7 +69,7 @@ const i18n = {
     bal: "Bal",
     customersTitle: "Customer Directory",
     customersSubtitle: "Complete overview of all registered members, points balances, and quick actions.",
-    searchPlaceholder: "Search by name, phone, or email...",
+    searchPlaceholder: "Search...",
     totalCustomers: "Total Registered Members",
     totalPointsHeld: "Points in Circulation",
     tblCustomer: "Member",
@@ -174,7 +174,7 @@ const i18n = {
     bal: "Bal",
     customersTitle: "Customer Directory",
     customersSubtitle: "Complete overview of all registered members, points balances, and quick actions.",
-    searchPlaceholder: "Search by name, phone, or email...",
+    searchPlaceholder: "Search...",
     totalCustomers: "Total Registered Members",
     totalPointsHeld: "Points in Circulation",
     tblCustomer: "Member",
@@ -300,7 +300,7 @@ export default function AdminPage() {
   const [newCashier, setNewCashier] = useState({
     name: "",
     username: "",
-    branchName: "Downtown Flagship",
+    branchName: "Main Branch",
     staffPin: "",
   });
 
@@ -695,7 +695,7 @@ export default function AdminPage() {
                   autoCapitalize="none"
                   value={emailInput}
                   onChange={(e) => setEmailInput(e.target.value)}
-                  placeholder="xian-admin"
+                  placeholder=""
                   className="glass-input w-full px-4 py-3 rounded-2xl text-sm"
                   required
                 />
@@ -709,7 +709,7 @@ export default function AdminPage() {
                   type="password"
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder=""
                   className="glass-input w-full px-4 py-3 rounded-2xl text-sm"
                   required
                 />
@@ -1578,7 +1578,7 @@ export default function AdminPage() {
                   type="text"
                   value={broadcastTitle}
                   onChange={(e) => setBroadcastTitle(e.target.value)}
-                  placeholder="Notification title or offer announcement"
+                  placeholder=""
                   className="glass-input w-full"
                   required
                 />
@@ -1592,7 +1592,7 @@ export default function AdminPage() {
                   rows={4}
                   value={broadcastMessage}
                   onChange={(e) => setBroadcastMessage(e.target.value)}
-                  placeholder="Write notification message details here..."
+                  placeholder=""
                   className="glass-input w-full resize-none"
                   required
                 />
@@ -1675,8 +1675,8 @@ export default function AdminPage() {
                   type="text"
                   value={newReward.title}
                   onChange={(e) => setNewReward({ ...newReward, title: e.target.value })}
-                  placeholder="e.g. Flat White, French Croissant, Kyoto Cold Brew..."
-                  className="glass-input w-full"
+                  placeholder=""
+                  className="glass-input w-full font-sans"
                   required
                 />
               </div>
@@ -1689,8 +1689,8 @@ export default function AdminPage() {
                   type="text"
                   value={newReward.description}
                   onChange={(e) => setNewReward({ ...newReward, description: e.target.value })}
-                  placeholder="e.g. Double shot espresso with velvety steamed whole milk"
-                  className="glass-input w-full"
+                  placeholder=""
+                  className="glass-input w-full font-sans"
                 />
               </div>
 
@@ -1875,7 +1875,7 @@ export default function AdminPage() {
                   type="text"
                   value={newCashier.name}
                   onChange={(e) => setNewCashier({ ...newCashier, name: e.target.value })}
-                  placeholder="Staff Full Name"
+                  placeholder=""
                   className="glass-input w-full font-sans"
                   required
                 />
@@ -1887,7 +1887,7 @@ export default function AdminPage() {
                   type="text"
                   value={newCashier.username}
                   onChange={(e) => setNewCashier({ ...newCashier, username: e.target.value })}
-                  placeholder="cashier"
+                  placeholder=""
                   className="glass-input w-full font-mono"
                   dir="ltr"
                   required
@@ -1913,7 +1913,7 @@ export default function AdminPage() {
                     maxLength={4}
                     value={newCashier.staffPin}
                     onChange={(e) => setNewCashier({ ...newCashier, staffPin: e.target.value })}
-                    placeholder="••••"
+                    placeholder=""
                     className="glass-input w-full font-mono text-center tracking-widest"
                     required
                   />
