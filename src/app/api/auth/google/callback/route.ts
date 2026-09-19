@@ -3,6 +3,9 @@ import { dbService } from "@/lib/db";
 import { signToken, TOKEN_COOKIE_NAME, PERMANENT_COOKIE_MAX_AGE } from "@/lib/auth";
 
 function getOrigin(req: Request): string {
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
+  }
   const host = req.headers.get("x-forwarded-host") || req.headers.get("host");
   const proto = req.headers.get("x-forwarded-proto") || (host?.includes("localhost") ? "http" : "https");
   if (host) {
@@ -136,7 +139,11 @@ export async function GET(req: Request) {
       tier: user.tier,
     });
 
-    const redirectResponse = NextResponse.redirect(`${origin}/customer`);
+    const targetUrl = new URL(`${origin}/customer`);
+    targetUrl.searchParams.set("auth_token", token);
+    targetUrl.searchParams.set("user_id", String(user._id));
+
+    const redirectResponse = NextResponse.redirect(targetUrl.toString());
     redirectResponse.cookies.set({
       name: TOKEN_COOKIE_NAME,
       value: token,

@@ -31,6 +31,23 @@ export async function getSession(req?: Request): Promise<AuthSession | null> {
         const verified = verifyToken(token);
         if (verified) return verified;
       }
+
+      // Fallback: check x-customer-id if token is delayed
+      const customerId = req.headers.get("x-customer-id");
+      if (customerId) {
+        const { dbService } = await import("./db");
+        const user = await dbService.findUserById(customerId);
+        if (user && user.role === "customer") {
+          return {
+            userId: user._id,
+            role: "customer",
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            tier: user.tier,
+          };
+        }
+      }
     }
 
     // 2. Check HTTP-only cookie

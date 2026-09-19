@@ -166,7 +166,10 @@ export default function CustomerPage() {
   const loadDashboard = async () => {
     try {
       const headers = getAuthHeaders();
-      const res = await fetch("/api/customer/dashboard", { headers });
+      const res = await fetch("/api/customer/dashboard", {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (res.ok && data.success) {
         if (prevPointsRef.current !== null && data.customer.pointsBalance > prevPointsRef.current) {
@@ -201,7 +204,10 @@ export default function CustomerPage() {
   const loadRewards = async () => {
     try {
       const headers = getAuthHeaders();
-      const res = await fetch("/api/customer/rewards", { headers });
+      const res = await fetch("/api/customer/rewards", {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (data.success) {
         setRewards(data.rewards || []);
@@ -215,7 +221,10 @@ export default function CustomerPage() {
   const loadNotifications = async () => {
     try {
       const headers = getAuthHeaders();
-      const res = await fetch("/api/customer/notifications", { headers });
+      const res = await fetch("/api/customer/notifications", {
+        headers,
+        credentials: "include",
+      });
       const data = await res.json();
       if (data.success) {
         setNotifications(data.notifications || []);
@@ -305,6 +314,19 @@ export default function CustomerPage() {
   };
 
   useEffect(() => {
+    // 0. Instant OAuth token capture if arriving from Google OAuth redirect
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const authToken = params.get("auth_token");
+      const userId = params.get("user_id");
+      if (authToken) {
+        localStorage.setItem(CUSTOMER_TOKEN_KEY, authToken);
+        if (userId) localStorage.setItem(CUSTOMER_ID_KEY, userId);
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+
     // 1. Instant Cache Retrieval for 0ms render & permanent login preservation
     try {
       if (typeof window !== "undefined") {
@@ -484,6 +506,7 @@ export default function CustomerPage() {
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(profile),
       });
       const data = await res.json();
