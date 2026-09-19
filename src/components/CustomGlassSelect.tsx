@@ -79,7 +79,7 @@ export default function CustomGlassSelect({
         disabled={disabled}
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
         className={`w-full glass-select flex items-center justify-between text-left cursor-pointer transition-all ${
-          isOpen ? "ring-2 ring-[#3F1215]/20 border-[#3F1215]" : ""
+          isOpen ? "ring-2 ring-[#cb202d]/20 border-[#cb202d]" : ""
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="flex items-center gap-2 min-w-0 overflow-hidden pr-2 flex-1">
@@ -89,12 +89,12 @@ export default function CustomGlassSelect({
                 {selectedOption.label}
               </span>
               {selectedOption.subtitle && (
-                <span className="truncate text-xs text-neutral-400 font-mono hidden sm:inline">
+                <span className="truncate text-xs text-neutral-400 font-sans hidden sm:inline">
                   {selectedOption.subtitle}
                 </span>
               )}
               {selectedOption.badge && (
-                <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-[#FAF5F2] text-[#3F1215] border border-[#EBD3C8] shrink-0 ml-auto mr-1">
+                <span className="text-[10px] font-bold font-sans px-2 py-0.5 rounded-md bg-rose-50 text-[#cb202d] border border-rose-200 shrink-0 ml-auto mr-1">
                   {selectedOption.badge}
                 </span>
               )}
@@ -108,14 +108,14 @@ export default function CustomGlassSelect({
 
         <ChevronDown
           className={`w-4 h-4 text-neutral-500 shrink-0 transition-transform duration-200 ${
-            isOpen ? "rotate-180 text-[#3F1215]" : ""
+            isOpen ? "rotate-180 text-[#cb202d]" : ""
           }`}
         />
       </button>
 
       {/* Floating Glass Menu Popup */}
       {isOpen && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 rounded-2xl bg-white/95 backdrop-blur-2xl border border-white/90 shadow-[0_16px_40px_-8px_rgba(63,18,21,0.22),0_4px_16px_rgba(0,0,0,0.08)] p-1.5 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-50 rounded-2xl bg-white/95 backdrop-blur-2xl border border-white/90 shadow-[0_16px_40px_-8px_rgba(203,32,45,0.18),0_4px_16px_rgba(0,0,0,0.08)] p-1.5 animate-in fade-in zoom-in-95 duration-150">
           {searchable && (
             <div className="p-1.5 border-b border-neutral-100 mb-1">
               <div className="relative flex items-center">
@@ -126,7 +126,7 @@ export default function CustomGlassSelect({
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search..."
-                  className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:border-[#3F1215] focus:bg-white transition-all font-sans"
+                  className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:border-[#cb202d] focus:bg-white transition-all font-sans"
                 />
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function CustomGlassSelect({
 
           <div className="max-h-56 overflow-y-auto space-y-0.5">
             {filteredOptions.length === 0 ? (
-              <div className="py-4 text-center text-xs text-neutral-400 font-mono">
+              <div className="py-4 text-center text-xs text-neutral-400 font-sans">
                 No matching options found
               </div>
             ) : (
@@ -150,8 +150,8 @@ export default function CustomGlassSelect({
                     }}
                     className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 rounded-xl text-left text-xs transition-all cursor-pointer ${
                       isSelected
-                        ? "bg-[#3F1215] text-[#FEECE2] font-semibold shadow-xs"
-                        : "text-neutral-700 hover:bg-[#FAF5F2] hover:text-[#3F1215]"
+                        ? "bg-[#cb202d] text-white font-semibold shadow-xs"
+                        : "text-neutral-700 hover:bg-rose-50 hover:text-[#cb202d]"
                     }`}
                   >
                     <div className="flex flex-col min-w-0">
@@ -159,8 +159,8 @@ export default function CustomGlassSelect({
                       {opt.subtitle && (
                         <span
                           className={`truncate text-[10px] ${
-                            isSelected ? "text-[#FEECE2]/75" : "text-neutral-400"
-                          } font-mono`}
+                            isSelected ? "text-white/80" : "text-neutral-400"
+                          } font-sans`}
                         >
                           {opt.subtitle}
                         </span>
@@ -170,16 +170,16 @@ export default function CustomGlassSelect({
                     <div className="flex items-center gap-2 shrink-0">
                       {opt.badge && (
                         <span
-                          className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded-md ${
+                          className={`text-[10px] font-bold font-sans px-2 py-0.5 rounded-md ${
                             isSelected
-                              ? "bg-white/20 text-[#FEECE2]"
-                              : "bg-[#FAF5F2] text-[#3F1215] border border-[#EBD3C8]"
+                              ? "bg-white/20 text-white"
+                              : "bg-rose-50 text-[#cb202d] border border-rose-200"
                           }`}
                         >
                           {opt.badge}
                         </span>
                       )}
-                      {isSelected && <Check className="w-3.5 h-3.5 shrink-0 text-[#FEECE2]" />}
+                      {isSelected && <Check className="w-3.5 h-3.5 shrink-0 text-white" />}
                     </div>
                   </button>
                 );

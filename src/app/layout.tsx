@@ -75,7 +75,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#f7f2e4" />
         {/* manifest and apple-mobile-web-app-title are set per-route via child layouts */}
       </head>
-      <body className={`${ibmPlexArabic.className} min-h-screen bg-[#FAF5F2] text-[#2B0B0D] antialiased selection:bg-[#cb202d] selection:text-[#ffffff]`}>
+      <body className={`${ibmPlexArabic.className} min-h-screen bg-[#FAF5F2] text-[#1c1917] antialiased selection:bg-[#cb202d] selection:text-[#ffffff]`}>
         <BrandProvider>{children}</BrandProvider>
       </body>
     </html>

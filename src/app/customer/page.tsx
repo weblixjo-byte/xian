@@ -566,22 +566,22 @@ export default function CustomerPage() {
         <div className="max-w-md w-full mx-auto my-auto">
           {/* Brand header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-[#3F1215] flex items-center justify-center text-white mx-auto mb-4 shadow-md overflow-hidden p-0.5 border border-[#3F1215]">
-              <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-xl" />
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-md overflow-hidden p-1 border border-neutral-200">
+              <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-2xl font-serif font-medium text-[#2B0B0D] mb-1">
+            <h1 className="text-2xl font-bold font-sans text-neutral-900 mb-1">
               {config.storeName}
             </h1>
-            <p className="text-sm text-neutral-500">{config.tagline}</p>
+            <p className="text-sm text-neutral-500 font-sans">{config.tagline}</p>
           </div>
 
           {/* Login Card (Google Authentication Only) */}
           <div className="glass-panel rounded-3xl p-8 shadow-xl text-center">
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-neutral-900 mb-2">
+              <h2 className="text-xl font-bold text-neutral-900 mb-2 font-sans">
                 Digital Loyalty Pass
               </h2>
-              <p className="text-xs text-neutral-500 leading-relaxed max-w-xs mx-auto">
+              <p className="text-xs text-neutral-500 leading-relaxed max-w-xs mx-auto font-sans">
                 Sign in or create your instant digital member pass with your Google account in one tap.
               </p>
             </div>
@@ -601,7 +601,7 @@ export default function CustomerPage() {
               type="button"
               onClick={handleGoogleRedirect}
               disabled={googleRedirecting}
-              className="w-full py-3.5 px-4 rounded-2xl border border-neutral-300/80 bg-white/90 hover:bg-white active:scale-98 text-neutral-800 text-sm font-medium flex items-center justify-center gap-3 transition-all shadow-xs disabled:opacity-70 cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-2xl border border-neutral-300/80 bg-white/90 hover:bg-white active:scale-98 text-neutral-800 text-sm font-semibold flex items-center justify-center gap-3 transition-all shadow-xs disabled:opacity-70 cursor-pointer font-sans"
             >
               {googleRedirecting ? (
                 <>
@@ -622,20 +622,20 @@ export default function CustomerPage() {
                 onClick={() => {
                   setShowGoogleModal(true);
                 }}
-                className="text-xs text-neutral-600 hover:text-neutral-900 underline font-medium py-1 px-2 rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer"
+                className="text-xs text-neutral-600 hover:text-neutral-900 underline font-semibold py-1 px-2 rounded-lg hover:bg-neutral-50 transition-colors cursor-pointer font-sans"
               >
                 Or sign in with Name and Email directly
               </button>
             </div>
 
-            <div className="mt-6 pt-5 border-t border-neutral-100 flex items-center justify-center gap-2 text-xs text-neutral-400 font-mono">
+            <div className="mt-6 pt-5 border-t border-neutral-100 flex items-center justify-center gap-2 text-xs text-neutral-400 font-sans">
               <ShieldCheck className="w-4 h-4 text-emerald-700" />
               <span>Secure Digital Pass Authentication</span>
             </div>
           </div>
         </div>
 
-        <div className="text-center text-xs text-neutral-400 py-4 font-mono">
+        <div className="text-center text-xs text-neutral-400 py-4 font-sans">
           © 2026 {config.storeName} • Digital Member Pass
         </div>
 
@@ -646,10 +646,10 @@ export default function CustomerPage() {
               {/* Modal Header */}
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-[#3F1215] flex items-center justify-center text-white text-[10px] font-bold">
-                    C
+                  <div className="w-6 h-6 rounded-lg bg-[#cb202d] flex items-center justify-center text-white text-[10px] font-bold">
+                    X
                   </div>
-                  <span className="text-sm font-semibold text-neutral-800">
+                  <span className="text-sm font-semibold text-neutral-800 font-sans">
                     Digital Membership Pass
                   </span>
                 </div>
@@ -665,10 +665,10 @@ export default function CustomerPage() {
               </div>
 
               <div className="mb-4">
-                <h3 className="text-sm font-semibold text-neutral-900 font-serif">
+                <h3 className="text-sm font-bold text-neutral-900 font-sans">
                   Sign In / Open Loyalty Pass
                 </h3>
-                <p className="text-xs text-neutral-500 mt-0.5">
+                <p className="text-xs text-neutral-500 mt-0.5 font-sans">
                   Loyalty & Rewards Program <strong className="text-neutral-800">{config.storeName}</strong>
                 </p>
               </div>
@@ -682,12 +682,12 @@ export default function CustomerPage() {
 
               {/* Clean Account Form */}
               <form onSubmit={handleCustomGoogleSubmit} className="space-y-4 mb-4">
-                <div className="p-3 rounded-2xl glass-panel-subtle text-xs text-neutral-700 mb-2">
+                <div className="p-3 rounded-2xl glass-panel-subtle text-xs text-neutral-700 mb-2 font-sans">
                   Enter your name and email to access your loyalty card instantly and save your points:
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-semibold text-neutral-700 mb-1 font-sans">
                     Full Name
                   </label>
                   <input
@@ -695,14 +695,14 @@ export default function CustomerPage() {
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder="Full Name"
-                    className="glass-input w-full"
+                    className="glass-input w-full font-sans"
                     required
                     autoFocus
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-semibold text-neutral-700 mb-1 font-sans">
                     Email Address
                   </label>
                   <input
@@ -710,7 +710,7 @@ export default function CustomerPage() {
                     value={customEmail}
                     onChange={(e) => setCustomEmail(e.target.value)}
                     placeholder="name@gmail.com"
-                    className="glass-input w-full"
+                    className="glass-input w-full font-sans"
                     required
                   />
                 </div>
@@ -719,14 +719,14 @@ export default function CustomerPage() {
                   <button
                     type="button"
                     onClick={() => setShowGoogleModal(false)}
-                    className="px-4 py-2.5 rounded-xl border border-[#EBD3C8] text-xs text-neutral-600 hover:bg-neutral-50 cursor-pointer"
+                    className="px-4 py-2.5 rounded-xl border border-neutral-200 text-xs text-neutral-600 hover:bg-neutral-50 cursor-pointer font-sans"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={googleLoading}
-                    className="flex-1 py-2.5 rounded-xl bg-[#3F1215] hover:bg-[#2B0B0D] text-[#FEECE2] text-xs font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98"
+                    className="flex-1 py-2.5 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-98 font-sans"
                   >
                     {googleLoading ? "Signing in..." : "Continue to Loyalty Pass"}
                   </button>
@@ -750,14 +750,14 @@ export default function CustomerPage() {
       <header className="glass-panel border-x-0 border-t-0 rounded-none sticky top-0 z-20 px-4 py-3">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[#3F1215] flex items-center justify-center text-white overflow-hidden p-0.5 border border-[#3F1215]">
-              <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-lg" />
+            <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center overflow-hidden p-1 border border-neutral-200 shadow-xs">
+              <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
             </div>
             <div>
-              <span className="font-semibold text-xs tracking-tight text-[#2B0B0D] block font-serif">
+              <span className="font-bold text-xs tracking-tight text-neutral-900 block font-sans">
                 {config.storeName}
               </span>
-              <span className="text-[10px] text-neutral-400 font-mono">Digital Loyalty Member</span>
+              <span className="text-[10px] text-neutral-500 font-sans">Digital Loyalty Member</span>
             </div>
           </div>
 
@@ -782,22 +782,22 @@ export default function CustomerPage() {
               setActiveTab("notifications");
               markAllRead();
             }}
-            className="mb-4 bg-[#3F1215] text-[#FEECE2] rounded-2xl p-3.5 shadow-md flex items-center justify-between gap-3 cursor-pointer hover:bg-[#2B0B0D] transition-all animate-in fade-in slide-in-from-top-2"
+            className="mb-4 bg-[#cb202d] text-white rounded-2xl p-3.5 shadow-md flex items-center justify-between gap-3 cursor-pointer hover:bg-[#b51a25] transition-all animate-in fade-in slide-in-from-top-2"
           >
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
-                <Bell className="w-4 h-4 text-[#FEECE2]" />
+              <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+                <Bell className="w-4 h-4 text-white" />
               </div>
               <div className="overflow-hidden">
-                <p className="text-xs font-semibold truncate text-[#FEECE2]">
+                <p className="text-xs font-bold truncate text-white font-sans">
                   {notifications[0].title}
                 </p>
-                <p className="text-[11px] text-[#FEECE2]/80 truncate">
+                <p className="text-[11px] text-white/90 truncate font-sans">
                   {notifications[0].message}
                 </p>
               </div>
             </div>
-            <span className="text-[10px] font-medium px-2.5 py-1 rounded-lg bg-white/15 text-[#FEECE2] shrink-0">
+            <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-white/20 text-white shrink-0 font-sans">
               View
             </span>
           </div>
@@ -806,14 +806,14 @@ export default function CustomerPage() {
         {/* Web Push Notification Status & Prompts */}
         {/* State 1: Permission has NOT been granted yet -> Show Enable banner */}
         {pushPermission === "default" && !pushSubscribed && (
-          <div className="mb-4 bg-gradient-to-r from-[#3F1215] to-[#52181C] text-[#FEECE2] rounded-3xl p-4 shadow-md border border-[#3F1215] flex items-center justify-between gap-3">
+          <div className="mb-4 bg-gradient-to-r from-[#cb202d] to-[#b51a25] text-white rounded-3xl p-4 shadow-md border border-[#cb202d] flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-[#FEECE2]/15 flex items-center justify-center shrink-0 text-[#FEECE2]">
+              <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 text-white">
                 <Bell className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="text-xs font-bold leading-tight">Enable Push Notifications</h4>
-                <p className="text-[10px] text-[#FEECE2]/80 mt-0.5 leading-snug">
+                <h4 className="text-xs font-bold leading-tight font-sans">Enable Push Notifications</h4>
+                <p className="text-[10px] text-white/90 mt-0.5 leading-snug font-sans">
                   Receive instant balance updates and rewards directly on your device
                 </p>
               </div>
@@ -821,7 +821,7 @@ export default function CustomerPage() {
             <button
               onClick={handleEnablePush}
               disabled={pushLoading}
-              className="px-4 py-2 rounded-xl bg-[#FEECE2] text-[#3F1215] text-xs font-bold hover:bg-white transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+              className="px-4 py-2 rounded-xl bg-white text-[#cb202d] text-xs font-bold hover:bg-rose-50 transition-all shadow-xs cursor-pointer active:scale-95 shrink-0 font-sans"
             >
               {pushLoading ? "Enabling..." : "Enable"}
             </button>
@@ -855,68 +855,68 @@ export default function CustomerPage() {
               <div className="flex items-start justify-between mb-5">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs uppercase tracking-wider font-mono text-neutral-400">
+                    <span className="text-xs font-semibold font-sans text-neutral-500">
                       Member Pass
                     </span>
                     <span
-                      className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border font-sans ${
                         customer.tier === "Gold"
                           ? "bg-amber-50 text-amber-900 border-amber-200"
                           : customer.tier === "Silver"
                           ? "bg-slate-100 text-slate-800 border-slate-300"
-                          : "bg-stone-50 text-stone-700 border-stone-200"
+                          : "bg-rose-50 text-[#cb202d] border-rose-100"
                       }`}
                     >
                       {customer.tier} Tier
                     </span>
                   </div>
-                  <h2 className="text-xl font-medium text-[#2B0B0D] font-serif">
+                  <h2 className="text-xl font-bold text-neutral-900 font-sans">
                     {customer.name}
                   </h2>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <GoogleIcon className="w-3.5 h-3.5" />
-                    <span className="text-xs text-neutral-500 font-mono">
+                    <span className="text-xs text-neutral-500 font-sans">
                       {customer.email || customer.phone || "Google Member"}
                     </span>
                   </div>
                 </div>
 
-                <div className="w-10 h-10 rounded-xl bg-[#3F1215] flex items-center justify-center text-white shadow-xs overflow-hidden p-0.5 border border-[#3F1215]">
-                  <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-lg" />
+                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-xs overflow-hidden p-1 border border-neutral-200">
+                  <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
                 </div>
               </div>
 
               {/* QR Code Section: Pristine White Box with Subtle Shadow */}
               <div className="my-6 flex flex-col items-center justify-center">
-                <div className="p-4 bg-white rounded-2xl border border-[#EBD3C8] shadow-sm flex items-center justify-center">
+                <div className="p-4 bg-white rounded-2xl border border-neutral-200 shadow-sm flex items-center justify-center">
                   <QRCodeSVG
                     value={customer.qrSecret}
                     size={184}
                     level="H"
                     includeMargin={false}
-                    fgColor="#3F1215"
+                    fgColor="#1c1917"
                   />
                 </div>
-                <span className="text-[11px] text-neutral-400 font-mono mt-2 flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[#3F1215]" />
+                <span className="text-[11px] text-neutral-500 font-sans mt-2 flex items-center gap-1 font-medium">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#cb202d]" />
                   Dynamic Encrypted QR
                 </span>
               </div>
 
               {/* 6-Digit PIN: Bold Monospace with Quick Copy */}
               <div className="glass-panel-subtle rounded-2xl p-4 text-center">
-                <span className="text-[11px] uppercase tracking-wider font-mono text-neutral-500 block mb-1">
+                <span className="text-xs font-semibold text-neutral-600 block mb-1 font-sans">
                   Fallback 6-Digit Counter PIN
                 </span>
 
                 <div className="flex items-center justify-center gap-3">
-                  <span className="font-pin text-2xl font-bold tracking-widest text-[#2B0B0D] select-all">
+                  <span className="font-pin text-2xl font-bold tracking-widest text-neutral-900 select-all">
                     {customer.formattedPin}
                   </span>
 
                   <button
                     onClick={handleCopyPin}
-                    className="p-1.5 rounded-lg border border-[#EBD3C8] bg-white hover:bg-[#FDF4F0] text-neutral-600 transition-colors active:scale-95 cursor-pointer"
+                    className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer"
                     title="Copy PIN"
                   >
                     {copied ? (
@@ -928,31 +928,31 @@ export default function CustomerPage() {
                 </div>
 
                 {copied && (
-                  <span className="text-[10px] font-mono text-[#3F1215] mt-1 block">
+                  <span className="text-[10px] font-sans text-[#cb202d] font-semibold mt-1 block">
                     Copied to clipboard!
                   </span>
                 )}
               </div>
 
               {/* Live Points Counter */}
-              <div className="mt-6 pt-5 border-t border-[#EBD3C8]/60 flex items-center justify-between">
+              <div className="mt-6 pt-5 border-t border-neutral-200 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] uppercase tracking-wider font-mono text-neutral-400 block mb-0.5">
+                  <span className="text-xs font-semibold text-neutral-500 block mb-0.5 font-sans">
                     Available Balance
                   </span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl font-bold tracking-tight text-[#3F1215] font-serif">
+                    <span className="text-3xl font-bold tracking-tight text-[#cb202d] font-sans">
                       {customer.pointsBalance}
                     </span>
-                    <span className="text-xs font-mono text-neutral-500 font-medium">pts</span>
+                    <span className="text-xs font-sans text-neutral-500 font-semibold">pts</span>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[11px] uppercase tracking-wider font-mono text-neutral-400 block mb-0.5">
+                  <span className="text-xs font-semibold text-neutral-500 block mb-0.5 font-sans">
                     Cash Valuation
                   </span>
-                  <span className="inline-block px-2.5 py-1 rounded-lg bg-[#FDF4F0] border border-[#EBD3C8] text-xs font-semibold text-[#3F1215]">
+                  <span className="inline-block px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-100 text-xs font-bold text-[#cb202d] font-sans">
                     = {formatCurrency(customer.currencyValue)}
                   </span>
                 </div>
@@ -988,16 +988,16 @@ export default function CustomerPage() {
             {/* Balance Overview Banner */}
             <div className="glass-panel rounded-3xl p-5 shadow-xs flex items-center justify-between">
               <div>
-                <span className="text-[11px] text-neutral-500 font-medium block">
+                <span className="text-xs text-neutral-500 font-semibold block font-sans">
                   Current Points Balance
                 </span>
-                <span className="text-2xl font-bold text-[#3F1215] font-mono" dir="ltr">
+                <span className="text-2xl font-bold text-[#cb202d] font-sans" dir="ltr">
                   {customer.pointsBalance.toLocaleString()}{" "}
-                  <span className="text-xs font-normal text-neutral-500">pts</span>
+                  <span className="text-xs font-normal text-neutral-500 font-sans">pts</span>
                 </span>
               </div>
               <div className="text-end">
-                <span className="text-xs text-emerald-800 font-medium bg-emerald-50/80 border border-emerald-200 px-3 py-1 rounded-full block">
+                <span className="text-xs text-emerald-800 font-semibold bg-emerald-50/80 border border-emerald-200 px-3 py-1 rounded-full block font-sans">
                   = {formatCurrency(customer.currencyValue)} instant discount
                 </span>
               </div>
@@ -1014,10 +1014,10 @@ export default function CustomerPage() {
                 return (
                   <div
                     key={reward._id}
-                    className="bg-white border border-[#EBD3C8] rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all group"
+                    className="bg-white border border-neutral-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all group"
                   >
                     {/* Top Hero Image Banner */}
-                    <div className="relative h-48 sm:h-52 w-full bg-[#FDF4F0] overflow-hidden">
+                    <div className="relative h-48 sm:h-52 w-full bg-neutral-50 overflow-hidden">
                       {reward.imageUrl ? (
                         <img
                           src={reward.imageUrl}
@@ -1025,23 +1025,23 @@ export default function CustomerPage() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-[#3F1215]/40 bg-[#FDF4F0]">
+                        <div className="w-full h-full flex items-center justify-center text-neutral-300 bg-neutral-50">
                           <Gift className="w-12 h-12" />
                         </div>
                       )}
 
                       {/* Points Badge */}
-                      <div className="absolute top-3.5 end-3.5 w-14 h-14 rounded-full bg-[#3F1215] text-[#FEECE2] border-2 border-white shadow-lg flex flex-col items-center justify-center">
+                      <div className="absolute top-3.5 end-3.5 w-14 h-14 rounded-full bg-[#cb202d] text-white border-2 border-white shadow-lg flex flex-col items-center justify-center">
                         <span className="text-base font-extrabold font-mono leading-none">
                           {reward.pointsRequired}
                         </span>
-                        <span className="text-[9px] font-semibold leading-none mt-0.5 opacity-90">
+                        <span className="text-[9px] font-semibold leading-none mt-0.5 opacity-90 font-sans">
                           pts
                         </span>
                       </div>
 
                       {/* Category Tag */}
-                      <div className="absolute top-3.5 start-3.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-[#3F1215] shadow-xs border border-white/80">
+                      <div className="absolute top-3.5 start-3.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-neutral-900 shadow-xs border border-neutral-200 font-sans">
                         {reward.category === "Drinks"
                           ? "Beverages"
                           : reward.category === "Food"
@@ -1056,33 +1056,33 @@ export default function CustomerPage() {
 
                     {/* Content Section */}
                     <div className="p-4 sm:p-5">
-                      <h4 className="text-base font-bold text-[#2B0B0D] mb-1 leading-snug">
+                      <h4 className="text-base font-bold text-neutral-900 mb-1 leading-snug font-sans">
                         {reward.title}
                       </h4>
-                      <p className="text-xs text-neutral-500 mb-4 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-neutral-500 mb-4 line-clamp-2 leading-relaxed font-sans">
                         {reward.description}
                       </p>
 
-                      <div className="pt-2 border-t border-[#EBD3C8]/60">
+                      <div className="pt-2 border-t border-neutral-200/60">
                         {canAfford ? (
                           <button
                             onClick={() => {
                               setRedeemingReward(reward);
                             }}
-                            className="w-full py-2.5 rounded-2xl bg-[#3F1215] hover:bg-[#2B0B0D] text-[#FEECE2] text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+                            className="w-full py-2.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer active:scale-98 font-sans"
                           >
                             <Gift className="w-4 h-4" />
                             <span>Redeem Reward Now</span>
                           </button>
                         ) : (
                           <div className="space-y-1.5 py-1">
-                            <div className="flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+                            <div className="flex items-center justify-between text-[11px] text-neutral-500 font-sans">
                               <span>{reward.pointsRequired - customer.pointsBalance} pts needed to unlock</span>
-                              <span className="font-semibold text-[#3F1215]">{progressPercent}%</span>
+                              <span className="font-semibold text-[#cb202d]">{progressPercent}%</span>
                             </div>
-                            <div className="w-full h-2 bg-[#FAF5F2] border border-[#EBD3C8] rounded-full overflow-hidden">
+                            <div className="w-full h-2 bg-neutral-100 border border-neutral-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-[#8C2E34] to-[#3F1215] rounded-full transition-all duration-500"
+                                className="h-full bg-[#cb202d] rounded-full transition-all duration-500"
                                 style={{ width: `${progressPercent}%` }}
                               />
                             </div>
@@ -1099,25 +1099,25 @@ export default function CustomerPage() {
 
         {/* TAB 3: TRANSACTION LEDGER */}
         {activeTab === "history" && (
-          <div className="bg-white border border-[#EBD3C8] rounded-3xl p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-[#2B0B0D] mb-4 pb-2 border-b border-[#EBD3C8]/60 font-serif">
+          <div className="bg-white border border-neutral-200 rounded-3xl p-5 shadow-sm">
+            <h3 className="text-sm font-bold text-neutral-900 mb-4 pb-2 border-b border-neutral-200 font-sans">
               Loyalty Activity Log
             </h3>
 
             {transactions.length === 0 ? (
-              <div className="text-center py-10 text-neutral-400 text-xs font-mono">
+              <div className="text-center py-10 text-neutral-400 text-xs font-sans">
                 No recorded transactions yet.
               </div>
             ) : (
-              <div className="divide-y divide-[#EBD3C8]/50">
+              <div className="divide-y divide-neutral-200/60">
                 {transactions.map((tx) => (
                   <div key={tx._id} className="py-3.5 flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-1.5 mb-1">
                         <span
-                          className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-medium ${
+                          className={`text-[10px] font-mono px-1.5 py-0.5 rounded font-bold ${
                             tx.type === "EARN"
-                              ? "bg-[#FDF4F0] text-[#3F1215] border border-[#EBD3C8]"
+                              ? "bg-rose-50 text-[#cb202d] border border-rose-100"
                               : "bg-amber-50 text-amber-900 border border-amber-200"
                           }`}
                         >
@@ -1126,11 +1126,11 @@ export default function CustomerPage() {
                         <span className="text-xs font-mono text-neutral-400">{tx.referenceCode}</span>
                       </div>
 
-                      <div className="text-xs font-medium text-[#2B0B0D]">
+                      <div className="text-xs font-semibold text-neutral-900 font-sans">
                         {tx.rewardTitle || tx.notes || "Store Purchase"}
                       </div>
 
-                      <div className="text-[11px] text-neutral-400 mt-0.5 font-mono">
+                      <div className="text-[11px] text-neutral-400 mt-0.5 font-sans">
                         {new Date(tx.createdAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -1143,13 +1143,13 @@ export default function CustomerPage() {
 
                     <div className="text-right flex-shrink-0">
                       <span
-                        className={`text-sm font-bold font-mono ${
-                          tx.points > 0 ? "text-[#3F1215]" : "text-neutral-800"
+                        className={`text-sm font-bold font-sans ${
+                          tx.points > 0 ? "text-[#cb202d]" : "text-neutral-800"
                         }`}
                       >
                         {tx.points > 0 ? `+${tx.points}` : tx.points} pts
                       </span>
-                      <span className="text-[11px] text-neutral-400 block font-mono">
+                      <span className="text-[11px] text-neutral-400 block font-sans">
                         Bal: {tx.balanceAfter}
                       </span>
                     </div>
@@ -1163,18 +1163,18 @@ export default function CustomerPage() {
         {/* TAB 4: IN-APP NOTIFICATIONS */}
         {activeTab === "notifications" && (
           <div className="space-y-3">
-            <div className="bg-white border border-[#EBD3C8] rounded-3xl p-5 shadow-sm">
-              <div className="flex items-center justify-between pb-3 border-b border-[#EBD3C8]/60">
+            <div className="bg-white border border-neutral-200 rounded-3xl p-5 shadow-sm">
+              <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
                 <div>
-                  <h3 className="text-sm font-semibold text-[#2B0B0D] font-serif">Notification Center</h3>
-                  <span className="text-[11px] text-neutral-400 font-mono">
+                  <h3 className="text-sm font-bold text-neutral-900 font-sans">Notification Center</h3>
+                  <span className="text-[11px] text-neutral-400 font-sans">
                     {unreadCount > 0 ? `${unreadCount} unread update${unreadCount > 1 ? "s" : ""}` : "All caught up"}
                   </span>
                 </div>
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllRead}
-                    className="text-xs font-mono text-[#3F1215] hover:text-[#2B0B0D] font-semibold flex items-center gap-1 py-1 px-2.5 rounded-lg bg-[#FAF5F2] border border-[#EBD3C8] transition-colors cursor-pointer"
+                    className="text-xs font-sans text-[#cb202d] hover:text-[#b51a25] font-semibold flex items-center gap-1 py-1 px-2.5 rounded-lg bg-rose-50 border border-rose-100 transition-colors cursor-pointer"
                   >
                     <CheckCheck className="w-3.5 h-3.5" />
                     <span>Mark all read</span>
@@ -1184,11 +1184,11 @@ export default function CustomerPage() {
 
               {notifications.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FAF5F2] border border-[#EBD3C8] text-neutral-400 flex items-center justify-center mx-auto mb-3">
+                  <div className="w-12 h-12 rounded-2xl bg-neutral-50 border border-neutral-200 text-neutral-400 flex items-center justify-center mx-auto mb-3">
                     <Bell className="w-5 h-5" />
                   </div>
-                  <p className="text-xs font-medium text-neutral-600">No notifications yet</p>
-                  <p className="text-[11px] text-neutral-400 font-mono mt-1">
+                  <p className="text-xs font-semibold text-neutral-700 font-sans">No notifications yet</p>
+                  <p className="text-[11px] text-neutral-400 font-sans mt-1">
                     You will receive real-time alerts for point credits, tier upgrades, and redeemed rewards.
                   </p>
                 </div>
@@ -1202,8 +1202,8 @@ export default function CustomerPage() {
                         key={n._id}
                         className={`p-3.5 rounded-2xl border transition-all ${
                           !n.isRead
-                            ? "bg-[#FAF5F2]/90 border-[#3F1215]/30 shadow-2xs"
-                            : "bg-white border-[#EBD3C8]/70"
+                            ? "bg-rose-50/40 border-rose-200/80 shadow-2xs"
+                            : "bg-white border-neutral-200"
                         }`}
                       >
                         <div className="flex items-start gap-3">
@@ -1211,7 +1211,7 @@ export default function CustomerPage() {
                             isReward
                               ? "bg-amber-50 text-amber-900 border border-amber-200"
                               : isPoints
-                              ? "bg-[#FDF4F0] text-[#3F1215] border border-[#EBD3C8]"
+                              ? "bg-rose-50 text-[#cb202d] border border-rose-100"
                               : "bg-neutral-100 text-neutral-600 border border-neutral-200"
                           }`}>
                             {isReward ? (
@@ -1224,10 +1224,10 @@ export default function CustomerPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1">
-                              <span className="text-xs font-bold text-[#2B0B0D] truncate font-serif">
+                              <span className="text-xs font-bold text-neutral-900 truncate font-sans">
                                 {n.title}
                               </span>
-                              <span className="text-[10px] font-mono text-neutral-400 shrink-0">
+                              <span className="text-[10px] font-sans text-neutral-400 shrink-0">
                                 {new Date(n.createdAt).toLocaleDateString("en-US", {
                                   month: "short",
                                   day: "numeric",
@@ -1236,12 +1236,12 @@ export default function CustomerPage() {
                                 })}
                               </span>
                             </div>
-                            <p className="text-xs text-neutral-600 leading-relaxed">
+                            <p className="text-xs text-neutral-600 leading-relaxed font-sans">
                               {n.message}
                             </p>
                           </div>
                           {!n.isRead && (
-                            <span className="w-2 h-2 rounded-full bg-[#3F1215] shrink-0 mt-1.5" />
+                            <span className="w-2 h-2 rounded-full bg-[#cb202d] shrink-0 mt-1.5" />
                           )}
                         </div>
                       </div>
@@ -1261,7 +1261,7 @@ export default function CustomerPage() {
             onClick={() => setActiveTab("card")}
             className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-full transition-all duration-300 cursor-pointer ${
               activeTab === "card"
-                ? "bg-[#3F1215] text-[#FEECE2] shadow-sm font-semibold scale-102"
+                ? "bg-[#cb202d] text-white shadow-sm font-semibold scale-102"
                 : "text-neutral-500 hover:text-neutral-900 hover:bg-white/40"
             }`}
           >
@@ -1273,7 +1273,7 @@ export default function CustomerPage() {
             onClick={() => setActiveTab("rewards")}
             className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-full transition-all duration-300 cursor-pointer ${
               activeTab === "rewards"
-                ? "bg-[#3F1215] text-[#FEECE2] shadow-sm font-semibold scale-102"
+                ? "bg-[#cb202d] text-white shadow-sm font-semibold scale-102"
                 : "text-neutral-500 hover:text-neutral-900 hover:bg-white/40"
             }`}
           >
@@ -1285,7 +1285,7 @@ export default function CustomerPage() {
             onClick={() => setActiveTab("history")}
             className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-full transition-all duration-300 cursor-pointer ${
               activeTab === "history"
-                ? "bg-[#3F1215] text-[#FEECE2] shadow-sm font-semibold scale-102"
+                ? "bg-[#cb202d] text-white shadow-sm font-semibold scale-102"
                 : "text-neutral-500 hover:text-neutral-900 hover:bg-white/40"
             }`}
           >
@@ -1300,7 +1300,7 @@ export default function CustomerPage() {
             }}
             className={`flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-full transition-all duration-300 cursor-pointer relative ${
               activeTab === "notifications"
-                ? "bg-[#3F1215] text-[#FEECE2] shadow-sm font-semibold scale-102"
+                ? "bg-[#cb202d] text-white shadow-sm font-semibold scale-102"
                 : "text-neutral-500 hover:text-neutral-900 hover:bg-white/40"
             }`}
           >
@@ -1321,10 +1321,10 @@ export default function CustomerPage() {
           <div className="glass-panel rounded-3xl p-6 max-w-sm w-full shadow-2xl animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-xl bg-[#FAF5F2] border border-[#EBD3C8] flex items-center justify-center text-[#3F1215]">
+                <div className="w-7 h-7 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-[#cb202d]">
                   <Gift className="w-4 h-4" />
                 </div>
-                <h3 className="text-sm font-semibold text-[#2B0B0D] font-serif">Redeem Reward</h3>
+                <h3 className="text-sm font-bold text-neutral-900 font-sans">Redeem Reward</h3>
               </div>
               <button
                 onClick={() => setRedeemingReward(null)}
@@ -1335,9 +1335,9 @@ export default function CustomerPage() {
             </div>
 
             {/* Reward Card Summary */}
-            <div className="glass-panel-subtle rounded-2xl overflow-hidden mb-4 border border-[#EBD3C8]">
+            <div className="glass-panel-subtle rounded-2xl overflow-hidden mb-4 border border-neutral-200">
               {redeemingReward.imageUrl && (
-                <div className="w-full h-32 overflow-hidden border-b border-[#EBD3C8]">
+                <div className="w-full h-32 overflow-hidden border-b border-neutral-200">
                   <img
                     src={redeemingReward.imageUrl}
                     alt={redeemingReward.title}
@@ -1346,29 +1346,29 @@ export default function CustomerPage() {
                 </div>
               )}
               <div className="p-3.5">
-                <span className="text-[10px] font-mono uppercase text-neutral-400 block mb-0.5">
+                <span className="text-[10px] font-sans font-medium uppercase tracking-wide text-neutral-500 block mb-0.5">
                   {redeemingReward.category}
                 </span>
-                <h4 className="text-sm font-bold text-[#2B0B0D]">{redeemingReward.title}</h4>
-                <div className="mt-2 pt-2 border-t border-[#EBD3C8] flex justify-between items-center text-xs">
-                  <span className="text-neutral-500 font-mono">Points Value:</span>
-                  <span className="font-bold font-mono text-[#3F1215]">{redeemingReward.pointsRequired} pts</span>
+                <h4 className="text-sm font-bold text-neutral-900">{redeemingReward.title}</h4>
+                <div className="mt-2 pt-2 border-t border-neutral-200 flex justify-between items-center text-xs">
+                  <span className="text-neutral-500 font-sans">Points Value:</span>
+                  <span className="font-bold font-sans text-[#cb202d]">{redeemingReward.pointsRequired} pts</span>
                 </div>
               </div>
             </div>
 
             {/* Prominent Counter Code Box */}
-            <div className="glass-panel-subtle border-2 border-[#3F1215]/30 rounded-2xl p-4 mb-3 text-center shadow-xs">
-              <span className="text-[10px] uppercase tracking-wider font-mono text-neutral-400 block mb-1">
+            <div className="glass-panel-subtle border-2 border-[#cb202d]/30 rounded-2xl p-4 mb-3 text-center shadow-xs">
+              <span className="text-[10px] uppercase tracking-wide font-sans font-semibold text-neutral-500 block mb-1">
                 Give this 6-Digit Code to Cashier
               </span>
               <div className="flex items-center justify-center gap-3">
-                <span className="font-pin text-3xl font-bold tracking-widest text-[#3F1215] select-all">
+                <span className="font-pin text-3xl font-bold tracking-widest text-[#cb202d] select-all">
                   {customer.formattedPin}
                 </span>
                 <button
                   onClick={handleCopyPin}
-                  className="p-1.5 rounded-lg border border-[#EBD3C8] bg-white/80 hover:bg-[#FDF4F0] text-neutral-600 transition-colors active:scale-95 cursor-pointer"
+                  className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-rose-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer"
                   title="Copy PIN"
                 >
                   {copied ? (
@@ -1379,7 +1379,7 @@ export default function CustomerPage() {
                 </button>
               </div>
               {copied && (
-                <span className="text-[10px] font-mono text-[#3F1215] mt-1 block">
+                <span className="text-[10px] font-sans font-medium text-[#cb202d] mt-1 block">
                   Copied to clipboard!
                 </span>
               )}
@@ -1387,16 +1387,16 @@ export default function CustomerPage() {
 
             {/* QR Code Presentation */}
             <div className="flex flex-col items-center justify-center mb-4">
-              <div className="p-2.5 bg-white rounded-xl border border-[#EBD3C8] shadow-2xs">
+              <div className="p-2.5 bg-white rounded-xl border border-neutral-200 shadow-2xs">
                 <QRCodeSVG
                   value={customer.qrSecret}
                   size={120}
                   level="H"
                   includeMargin={false}
-                  fgColor="#3F1215"
+                  fgColor="#1c1917"
                 />
               </div>
-              <span className="text-[10px] text-neutral-400 font-mono mt-1.5">
+              <span className="text-[10px] text-neutral-500 font-sans mt-1.5">
                 Or scan customer QR on POS terminal
               </span>
             </div>
@@ -1411,7 +1411,7 @@ export default function CustomerPage() {
 
             <button
               onClick={() => setRedeemingReward(null)}
-              className="w-full py-3 rounded-2xl bg-[#3F1215] hover:bg-[#2B0B0D] text-[#FEECE2] text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-98"
+              className="w-full py-3 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-semibold transition-all shadow-xs cursor-pointer active:scale-98"
             >
               Done & Return to Pass
             </button>
@@ -1422,32 +1422,32 @@ export default function CustomerPage() {
       {/* MODAL: iOS Add to Home Screen Guidance */}
       {showIosInstallModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-[#EBD3C8] rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
-            <div className="w-12 h-12 rounded-full bg-[#FAF5F2] border border-[#EBD3C8] text-[#3F1215] flex items-center justify-center mx-auto mb-3">
+          <div className="bg-white border border-neutral-200 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center">
+            <div className="w-12 h-12 rounded-full bg-rose-50 border border-rose-200 text-[#cb202d] flex items-center justify-center mx-auto mb-3">
               <Bell className="w-6 h-6" />
             </div>
-            <h3 className="text-base font-bold text-[#2B0B0D] mb-1">
+            <h3 className="text-base font-bold text-neutral-900 mb-1 font-sans">
               Enable Notifications on iPhone
             </h3>
             <p className="text-xs text-neutral-500 mb-5 leading-relaxed">
               Apple requires adding the app to your Home Screen first to receive lock screen notifications:
             </p>
 
-            <div className="bg-[#FAF5F2] border border-[#EBD3C8] rounded-2xl p-4 text-start space-y-3 mb-5 text-xs text-[#2B0B0D]">
+            <div className="bg-[#FAF5F2] border border-neutral-200 rounded-2xl p-4 text-start space-y-3 mb-5 text-xs text-neutral-900">
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
                   1
                 </span>
                 <span>Tap the Share button <strong>⎋ (Share)</strong> in Safari&apos;s bottom toolbar.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
                   2
                 </span>
                 <span>Choose <strong>&quot;Add to Home Screen&quot;</strong>.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white font-bold text-[10px] flex items-center justify-center flex-shrink-0 mt-0.5">
                   3
                 </span>
                 <span>Open <strong>xian</strong> from your home screen and tap &quot;Enable&quot;.</span>
@@ -1456,7 +1456,7 @@ export default function CustomerPage() {
 
             <button
               onClick={() => setShowIosInstallModal(false)}
-              className="w-full py-2.5 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-semibold hover:bg-[#2B0B0D] transition-colors cursor-pointer"
+              className="w-full py-2.5 rounded-xl bg-[#cb202d] text-white text-xs font-semibold hover:bg-[#b51a25] transition-colors cursor-pointer"
             >
               Got it, thanks
             </button>

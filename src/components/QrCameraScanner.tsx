@@ -207,11 +207,11 @@ export default function QrCameraScanner({ onScan, onClose }: QrCameraScannerProp
         {/* Header */}
         <div className="px-4 py-3.5 border-b border-neutral-800 flex items-center justify-between text-white">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3F1215] border border-[#52181C] flex items-center justify-center text-[#FEECE2]">
+            <div className="w-8 h-8 rounded-xl bg-[#cb202d] border border-rose-600 flex items-center justify-center text-white">
               <Camera className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold font-serif text-[#FEECE2]">Customer QR Scanner</h3>
+              <h3 className="text-sm font-bold font-sans text-white">Customer QR Scanner</h3>
               <p className="text-[10px] text-neutral-400">Point camera at customer digital pass</p>
             </div>
           </div>
@@ -239,15 +239,15 @@ export default function QrCameraScanner({ onScan, onClose }: QrCameraScannerProp
           {!error && !scannedResult && (
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               {/* Darkened borders */}
-              <div className="relative w-64 h-64 border-2 border-[#FEECE2]/80 rounded-2xl shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]">
+              <div className="relative w-64 h-64 border-2 border-white/80 rounded-2xl shadow-[0_0_0_9999px_rgba(0,0,0,0.55)]">
                 {/* 4 Corner brackets */}
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#FEECE2] rounded-tl-lg" />
-                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#FEECE2] rounded-tr-lg" />
-                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#FEECE2] rounded-bl-lg" />
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#FEECE2] rounded-br-lg" />
+                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-4 border-l-4 border-[#cb202d] rounded-tl-lg" />
+                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-4 border-r-4 border-[#cb202d] rounded-tr-lg" />
+                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-4 border-l-4 border-[#cb202d] rounded-bl-lg" />
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-4 border-r-4 border-[#cb202d] rounded-br-lg" />
 
                 {/* Animated Laser Line */}
-                <div className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#FEECE2] to-transparent shadow-[0_0_12px_#FEECE2] animate-bounce" />
+                <div className="absolute left-2 right-2 h-0.5 bg-gradient-to-r from-transparent via-[#cb202d] to-transparent shadow-[0_0_12px_#cb202d] animate-bounce" />
               </div>
             </div>
           )}
@@ -255,17 +255,17 @@ export default function QrCameraScanner({ onScan, onClose }: QrCameraScannerProp
           {/* Initializing Loader */}
           {isInitializing && !error && (
             <div className="absolute inset-0 bg-neutral-950/80 flex flex-col items-center justify-center gap-3 text-white">
-              <div className="w-8 h-8 rounded-full border-2 border-[#FEECE2] border-t-transparent animate-spin" />
-              <span className="text-xs font-mono text-[#FEECE2]">Starting camera stream...</span>
+              <div className="w-8 h-8 rounded-full border-2 border-[#cb202d] border-t-transparent animate-spin" />
+              <span className="text-xs font-sans text-rose-100">Starting camera stream...</span>
             </div>
           )}
 
           {/* Success Flash Indicator */}
           {scannedResult && (
-            <div className="absolute inset-0 bg-[#3F1215]/95 flex flex-col items-center justify-center gap-2 text-[#FEECE2] p-4 text-center animate-in zoom-in-95 duration-150">
-              <CheckCircle2 className="w-12 h-12 text-[#FEECE2] animate-pulse" />
-              <span className="text-sm font-semibold font-serif">Customer pass identified!</span>
-              <span className="text-xs font-mono text-[#FEECE2]/80 truncate max-w-xs">{scannedResult}</span>
+            <div className="absolute inset-0 bg-[#cb202d]/95 flex flex-col items-center justify-center gap-2 text-white p-4 text-center animate-in zoom-in-95 duration-150">
+              <CheckCircle2 className="w-12 h-12 text-white animate-pulse" />
+              <span className="text-sm font-bold font-sans">Customer pass identified!</span>
+              <span className="text-xs font-sans text-white/90 truncate max-w-xs">{scannedResult}</span>
             </div>
           )}
 
@@ -279,7 +279,7 @@ export default function QrCameraScanner({ onScan, onClose }: QrCameraScannerProp
               <div className="flex flex-col gap-2 w-full max-w-xs">
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#3F1215] hover:bg-[#2B0B0D] text-[#FEECE2] text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer border border-[#52181C]"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer border border-rose-600"
                 >
                   <Upload className="w-4 h-4" />
                   <span>Upload QR Screenshot / Image</span>

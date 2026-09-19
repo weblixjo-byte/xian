@@ -668,16 +668,16 @@ export default function AdminPage() {
       >
         <div className="max-w-sm w-full mx-auto my-auto py-4">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-[#3F1215] text-white flex items-center justify-center mx-auto mb-4 shadow-md overflow-hidden p-0.5 border border-[#3F1215]">
-              <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-xl" />
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center mx-auto mb-4 shadow-md overflow-hidden p-1.5 border border-neutral-200">
+              <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-2xl font-serif font-medium text-[#2B0B0D] mb-1">
+            <h1 className="text-2xl font-bold font-sans text-neutral-900 mb-1">
               {config.storeName}
             </h1>
             <p className="text-xs text-neutral-500">{t.portalSubtitle}</p>
           </div>
 
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl">
+          <div className="glass-panel rounded-3xl p-6 sm:p-8 shadow-xl border border-neutral-200/80">
             {loginError && (
               <div className="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-700 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -687,7 +687,7 @@ export default function AdminPage() {
 
             <form onSubmit={handleAdminLogin} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#2B0B0D] mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
                   {t.adminEmail}
                 </label>
                 <input
@@ -702,7 +702,7 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#2B0B0D] mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-700 mb-1.5">
                   {t.password}
                 </label>
                 <input
@@ -718,7 +718,7 @@ export default function AdminPage() {
               <button
                 type="submit"
                 disabled={loginLoading}
-                className="w-full py-3.5 rounded-2xl bg-[#3F1215] text-[#FEECE2] text-sm font-semibold hover:bg-[#2B0B0D] transition-all disabled:opacity-50 mt-2 cursor-pointer shadow-sm active:scale-98"
+                className="w-full py-3.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-sm font-bold transition-all disabled:opacity-50 mt-2 cursor-pointer shadow-md hover:shadow-lg active:scale-98"
               >
                 {loginLoading ? t.authenticating : t.signIn}
               </button>
@@ -727,12 +727,12 @@ export default function AdminPage() {
         </div>
 
         <div className="text-center text-xs text-neutral-500 py-4 flex items-center justify-center gap-4">
-          <Link href="/cashier" className="hover:text-[#3F1215] underline flex items-center gap-1">
-            <Coffee className="w-3.5 h-3.5 text-[#3F1215]" />
+          <Link href="/cashier" className="hover:text-[#cb202d] underline flex items-center gap-1 font-medium transition-colors">
+            <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
             {t.openCashier}
           </Link>
           <span className="text-neutral-300">•</span>
-          <Link href="/customer" className="hover:text-[#3F1215] underline">
+          <Link href="/customer" className="hover:text-[#cb202d] underline font-medium transition-colors">
             {t.openCustomer}
           </Link>
         </div>
@@ -750,28 +750,28 @@ export default function AdminPage() {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="w-12 h-12 rounded-2xl bg-[#3F1215] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+            <div className="w-12 h-12 rounded-2xl bg-[#cb202d] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
               <Smartphone className="w-6 h-6" />
             </div>
 
-            <h3 className="text-base font-bold text-center text-[#2B0B0D] mb-1">
+            <h3 className="text-base font-bold text-center text-neutral-900 mb-1">
               Install Admin Dashboard
             </h3>
             <p className="text-xs text-neutral-500 text-center mb-4">
               Add a dedicated Admin icon that opens this dashboard directly:
             </p>
 
-            <div className="space-y-3 glass-panel-subtle rounded-2xl p-4 text-xs text-[#2B0B0D]">
+            <div className="space-y-3 glass-panel-subtle rounded-2xl p-4 text-xs text-neutral-800">
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
                 <span>Tap the <strong>Share</strong> button in Safari or <strong>Menu (⋮)</strong> in Chrome.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
                 <span>Select <strong>&quot;Add to Home Screen&quot;</strong>.</span>
               </div>
               <div className="flex items-start gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-[#3F1215] text-[#FEECE2] text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <span className="w-5 h-5 rounded-full bg-[#cb202d] text-white text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
                 <span>Tap <strong>Add</strong>. The icon will be named <strong>xian Admin</strong> and will open the dashboard directly.</span>
               </div>
             </div>
@@ -779,7 +779,7 @@ export default function AdminPage() {
             <button
               type="button"
               onClick={() => setShowInstallGuide(false)}
-              className="w-full mt-4 py-2.5 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-bold hover:bg-[#2B0B0D] transition-colors cursor-pointer"
+              className="w-full mt-4 py-2.5 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-colors cursor-pointer shadow-sm"
             >
               Got It
             </button>
@@ -801,21 +801,21 @@ export default function AdminPage() {
   // Super Admin Layout (100% English, Centered & Balanced Layout)
   return (
     <div
-      dir="ltr"
-      className="min-h-screen bg-[#FAF5F2] flex flex-col lg:flex-row transition-all text-[#2B0B0D]"
+      dir={lang === "ar" ? "rtl" : "ltr"}
+      className="min-h-screen bg-[#FAF5F2] flex flex-col lg:flex-row transition-all text-neutral-900"
     >
       {/* MOBILE & IPAD PORTRAIT TOP HEADER (< lg: 1024px) */}
       <div className="lg:hidden bg-white/95 backdrop-blur-md border-b border-[#EBD3C8] sticky top-0 z-30">
         <div className="px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-[#3F1215] flex items-center justify-center text-white shrink-0 overflow-hidden p-0.5 border border-[#3F1215]">
-              <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-lg" />
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden p-1 border border-neutral-200 shadow-xs">
+              <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
             </div>
             <div className="min-w-0">
-              <span className="font-semibold text-sm text-[#2B0B0D] block leading-tight truncate font-serif">
+              <span className="font-bold text-sm text-neutral-900 block leading-tight truncate font-sans">
                 {config.storeName}
               </span>
-              <span className="text-[10px] font-mono text-[#A44A3F] uppercase tracking-wider font-semibold">
+              <span className="text-[10px] text-[#cb202d] uppercase font-bold tracking-normal font-sans block mt-0.5">
                 {t.superAdmin}
               </span>
             </div>
@@ -825,9 +825,9 @@ export default function AdminPage() {
             <Link
               href="/cashier"
               title={t.openCashier}
-              className="px-2.5 py-1.5 rounded-xl border border-[#EBD3C8] bg-white hover:bg-[#FDF4F0] text-xs font-medium text-[#2B0B0D] transition-colors flex items-center gap-1"
+              className="px-2.5 py-1.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-xs font-medium text-neutral-800 transition-colors flex items-center gap-1 shadow-2xs"
             >
-              <Coffee className="w-3.5 h-3.5 text-[#3F1215]" />
+              <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
               <span className="hidden sm:inline">{t.openCashier}</span>
             </Link>
 
@@ -835,7 +835,7 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={handleInstallClick}
-                className="px-2.5 py-1.5 rounded-xl border border-[#EBD3C8] bg-white hover:bg-[#FDF4F0] text-xs font-semibold text-[#3F1215] flex items-center gap-1 transition-colors cursor-pointer"
+                className="px-2.5 py-1.5 rounded-xl border border-red-200 bg-red-50/70 hover:bg-red-50 text-xs font-semibold text-[#cb202d] flex items-center gap-1 transition-colors cursor-pointer"
                 title="Install Admin Dashboard"
               >
                 <Smartphone className="w-3.5 h-3.5" />
@@ -864,11 +864,11 @@ export default function AdminPage() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-3 py-2 rounded-xl text-xs font-medium shrink-0 flex items-center gap-1.5 transition-all cursor-pointer ${
                   isActive
-                    ? "bg-[#3F1215] text-[#FEECE2] shadow-xs font-semibold"
-                    : "bg-[#FDF4F0] text-[#2B0B0D] hover:bg-[#EBD3C8]/50 border border-[#EBD3C8]/60"
+                    ? "bg-[#cb202d] text-white shadow-xs font-semibold"
+                    : "bg-white/80 text-neutral-700 hover:bg-white border border-neutral-200/80"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#FEECE2]" : "text-[#3F1215]"}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? "text-white" : "text-[#cb202d]"}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -881,14 +881,14 @@ export default function AdminPage() {
         <div>
           {/* Brand header */}
           <div className="flex items-center gap-3 px-2 py-3 mb-5 border-b border-[#EBD3C8]/60">
-            <div className="w-11 h-11 rounded-xl bg-[#3F1215] flex items-center justify-center text-white flex-shrink-0 overflow-hidden p-0.5 border border-[#3F1215]">
-              <img src="/logo.png" alt="xian" className="w-full h-full object-cover rounded-lg" />
+            <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 overflow-hidden p-1 border border-neutral-200 shadow-xs">
+              <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
             </div>
             <div className="truncate">
-              <span className="font-semibold text-sm text-[#2B0B0D] block leading-tight truncate font-serif">
+              <span className="font-bold text-base text-neutral-900 block leading-tight truncate font-sans">
                 {config.storeName}
               </span>
-              <span className="text-[10px] font-mono text-[#A44A3F] uppercase tracking-wider font-semibold">
+              <span className="text-[11px] text-[#cb202d] uppercase font-bold tracking-normal font-sans block mt-0.5">
                 {t.superAdmin}
               </span>
             </div>
@@ -905,11 +905,11 @@ export default function AdminPage() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer ${
                     isActive
-                      ? "bg-[#3F1215] text-[#FEECE2] shadow-sm font-semibold"
-                      : "text-neutral-600 hover:text-[#2B0B0D] hover:bg-[#FDF4F0]"
+                      ? "bg-[#cb202d] text-white shadow-sm font-semibold"
+                      : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100/70"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-[#FEECE2]" : "text-[#3F1215]"}`} />
+                  <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-white" : "text-[#cb202d]"}`} />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -920,7 +920,7 @@ export default function AdminPage() {
         {/* Sidebar Footer */}
         <div className="pt-4 border-t border-[#EBD3C8]/60 space-y-3">
           <div className="px-2">
-            <span className="text-xs font-semibold text-[#2B0B0D] block truncate">
+            <span className="text-xs font-semibold text-neutral-900 block truncate">
               {admin.name}
             </span>
             <span className="text-[11px] text-neutral-400 font-mono block truncate" dir="ltr">
@@ -931,9 +931,9 @@ export default function AdminPage() {
           <div className="flex items-center justify-between pt-1">
             <Link
               href="/cashier"
-              className="text-xs text-[#3F1215] hover:text-[#2B0B0D] font-medium flex items-center gap-1.5 transition-colors"
+              className="text-xs text-[#cb202d] hover:text-[#b51a25] font-semibold flex items-center gap-1.5 transition-colors"
             >
-              <Coffee className="w-3.5 h-3.5 text-[#3F1215]" />
+              <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
               {t.openCashier}
             </Link>
             <div className="flex items-center gap-2">
@@ -941,7 +941,7 @@ export default function AdminPage() {
                 <button
                   type="button"
                   onClick={handleInstallClick}
-                  className="text-xs text-[#3F1215] hover:text-[#2B0B0D] flex items-center gap-1 cursor-pointer font-medium"
+                  className="text-xs text-[#cb202d] hover:text-[#b51a25] flex items-center gap-1 cursor-pointer font-semibold"
                   title="Install Admin App"
                 >
                   <Smartphone className="w-3.5 h-3.5" />
@@ -967,10 +967,10 @@ export default function AdminPage() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-medium text-neutral-900">
+                <h1 className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
                   {t.analyticsTitle}
                 </h1>
-                <p className="text-xs text-neutral-500 mt-0.5">
+                <p className="text-xs text-neutral-500 mt-0.5 font-sans">
                   {t.analyticsSubtitle}
                 </p>
               </div>
@@ -978,7 +978,7 @@ export default function AdminPage() {
               <button
                 onClick={loadMetrics}
                 disabled={loadingMetrics}
-                className="px-4 py-2.5 rounded-2xl glass-panel hover:bg-white text-xs font-semibold text-[#3F1215] flex items-center gap-2 self-start transition-all shadow-xs cursor-pointer active:scale-95"
+                className="px-4 py-2.5 rounded-2xl glass-panel hover:bg-white text-xs font-semibold text-[#cb202d] flex items-center gap-2 self-start transition-all shadow-xs cursor-pointer active:scale-95"
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${loadingMetrics ? "animate-spin" : ""}`} />
                 <span>{t.refreshData}</span>
@@ -988,14 +988,14 @@ export default function AdminPage() {
             {/* Metrics Cards Grid - Clean Minimalist Luxury Glass */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Card 1: Revenue Volume */}
-              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#3F1215]/30">
+              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#cb202d]/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[11px] font-semibold text-neutral-500">{t.cardRevenue}</span>
                   <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center">
                     <DollarSign className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#2B0B0D] tracking-tight" dir="ltr">
+                <div className="text-2xl font-bold text-neutral-900 tracking-tight" dir="ltr">
                   {formatCurrency(metrics?.totalRevenueVolume || 0)}
                 </div>
                 <span className="text-[11px] text-neutral-400 mt-1 block">
@@ -1004,46 +1004,46 @@ export default function AdminPage() {
               </div>
 
               {/* Card 2: Points Issued */}
-              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#3F1215]/30">
+              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#cb202d]/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[11px] font-semibold text-neutral-500">{t.cardIssued}</span>
-                  <div className="w-8 h-8 rounded-xl bg-[#FDF4F0] text-[#3F1215] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-rose-50 text-[#cb202d] flex items-center justify-center">
                     <TrendingUp className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#3F1215] font-mono" dir="ltr">
+                <div className="text-2xl font-bold text-[#cb202d] font-sans" dir="ltr">
                   +{metrics?.totalPointsIssued.toLocaleString() || 0}
                 </div>
-                <span className="text-[11px] text-neutral-400 mt-1 block font-mono">
+                <span className="text-[11px] text-neutral-400 mt-1 block font-sans">
                   {t.cardIssuedSub}
                 </span>
               </div>
 
               {/* Card 3: Points Redeemed */}
-              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#3F1215]/30">
+              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#cb202d]/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[11px] font-semibold text-neutral-500">{t.cardRedeemed}</span>
                   <div className="w-8 h-8 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center">
                     <Award className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-neutral-800 font-mono" dir="ltr">
+                <div className="text-2xl font-bold text-neutral-800 font-sans" dir="ltr">
                   -{metrics?.totalPointsRedeemed.toLocaleString() || 0}
                 </div>
-                <span className="text-[11px] text-neutral-400 mt-1 block font-mono">
+                <span className="text-[11px] text-neutral-400 mt-1 block font-sans">
                   {t.cardRedeemedSub}
                 </span>
               </div>
 
               {/* Card 4: Active Customer Base */}
-              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#3F1215]/30">
+              <div className="glass-panel rounded-3xl p-5 sm:p-6 transition-all hover:shadow-md hover:border-[#cb202d]/30">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[11px] font-semibold text-neutral-500">{t.cardMembers}</span>
-                  <div className="w-8 h-8 rounded-xl bg-[#FAF5F2] text-[#3F1215] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-xl bg-neutral-100 text-neutral-800 flex items-center justify-center">
                     <Users className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-[#2B0B0D]" dir="ltr">
+                <div className="text-2xl font-bold text-neutral-900" dir="ltr">
                   {metrics?.activeCustomerCount || 0}
                 </div>
                 <span className="text-[11px] text-neutral-400 mt-1 block">
@@ -1058,12 +1058,12 @@ export default function AdminPage() {
               <div className="glass-panel rounded-3xl p-6 sm:p-7 shadow-sm">
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#EBD3C8]/60">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[#3F1215]" />
-                    <h3 className="text-sm font-semibold text-[#2B0B0D]">{t.topCustomers}</h3>
+                    <div className="w-2 h-2 rounded-full bg-[#cb202d]" />
+                    <h3 className="text-sm font-bold text-neutral-900 font-sans">{t.topCustomers}</h3>
                   </div>
                   <button
                     onClick={() => setActiveTab("customers")}
-                    className="text-xs text-[#3F1215] hover:underline font-medium cursor-pointer"
+                    className="text-xs text-[#cb202d] hover:underline font-semibold cursor-pointer"
                   >
                     View All Members →
                   </button>
@@ -1073,13 +1073,13 @@ export default function AdminPage() {
                   {metrics?.topCustomers.slice(0, 5).map((cust, idx) => (
                     <div key={cust._id} className="py-3 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="w-6 h-6 rounded-lg bg-[#FAF5F2] text-[#3F1215] text-xs font-mono font-semibold flex items-center justify-center">
+                        <span className="w-6 h-6 rounded-lg bg-neutral-100 text-neutral-800 text-xs font-mono font-semibold flex items-center justify-center">
                           #{idx + 1}
                         </span>
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold text-[#2B0B0D]">{cust.name}</span>
-                            <span className="text-[9px] px-2 py-0.5 rounded-full font-medium bg-[#FDF4F0] text-[#3F1215] border border-[#EBD3C8]">
+                            <span className="text-xs font-semibold text-neutral-900">{cust.name}</span>
+                            <span className="text-[9px] px-2 py-0.5 rounded-full font-semibold bg-rose-50 text-[#cb202d] border border-rose-100">
                               {cust.tier}
                             </span>
                           </div>
@@ -1090,7 +1090,7 @@ export default function AdminPage() {
                       </div>
 
                       <div className={lang === "ar" ? "text-left" : "text-right"}>
-                        <span className="text-xs font-bold font-mono text-[#3F1215] block" dir="ltr">
+                        <span className="text-xs font-bold font-mono text-[#cb202d] block" dir="ltr">
                           {cust.lifetimePoints} {t.pts}
                         </span>
                         <span className="text-[10px] text-neutral-400 font-mono" dir="ltr">
@@ -1107,7 +1107,7 @@ export default function AdminPage() {
                 <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#EBD3C8]/60">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-600" />
-                    <h3 className="text-sm font-semibold text-[#2B0B0D]">{t.liveActivity}</h3>
+                    <h3 className="text-sm font-bold text-neutral-900 font-sans">{t.liveActivity}</h3>
                   </div>
                   <span className="text-[11px] font-mono text-neutral-400">{t.auditTrail}</span>
                 </div>
@@ -1129,7 +1129,7 @@ export default function AdminPage() {
                             >
                               {tx.type === "EARN" ? "Earned" : "Redeemed"}
                             </span>
-                            <span className="font-semibold text-[#2B0B0D]">{tx.customerName}</span>
+                            <span className="font-semibold text-neutral-900">{tx.customerName}</span>
                           </div>
                           <span className="text-[10px] text-neutral-400 font-mono block">
                             {tx.referenceCode} • {tx.branchName || "Main"}
@@ -1140,7 +1140,7 @@ export default function AdminPage() {
                           <span
                             dir="ltr"
                             className={`font-mono font-bold block ${
-                              tx.points > 0 ? "text-emerald-700" : "text-[#3F1215]"
+                              tx.points > 0 ? "text-emerald-700" : "text-[#cb202d]"
                             }`}
                           >
                             {tx.points > 0 ? `+${tx.points}` : tx.points} {t.pts}
@@ -1165,7 +1165,7 @@ export default function AdminPage() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-medium text-neutral-900">
+                <h1 className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
                   {t.customersTitle}
                 </h1>
                 <p className="text-xs text-neutral-500 mt-0.5">
@@ -1174,14 +1174,14 @@ export default function AdminPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="px-3.5 py-1.5 rounded-xl bg-white border border-[#EBD3C8] shadow-2xs text-xs">
-                  <span className="text-neutral-400 font-mono text-[11px] me-1.5">{t.totalCustomers}:</span>
-                  <span className="font-bold text-[#3F1215]">{customersList.length}</span>
+                <div className="px-3.5 py-1.5 rounded-xl bg-white border border-neutral-200 shadow-2xs text-xs">
+                  <span className="text-neutral-500 font-sans text-[11px] me-1.5">{t.totalCustomers}:</span>
+                  <span className="font-bold text-[#cb202d]">{customersList.length}</span>
                 </div>
                 <button
                   onClick={loadCustomers}
                   disabled={loadingCustomers}
-                  className="px-3.5 py-2 rounded-xl border border-[#EBD3C8] bg-white hover:bg-[#FAF5F2] text-xs font-medium text-[#3F1215] flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
+                  className="px-3.5 py-2 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-xs font-semibold text-[#cb202d] flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${loadingCustomers ? "animate-spin" : ""}`} />
                   <span>{t.refreshData}</span>
@@ -1197,7 +1197,7 @@ export default function AdminPage() {
                 value={customerSearchQuery}
                 onChange={(e) => setCustomerSearchQuery(e.target.value)}
                 placeholder={t.searchPlaceholder}
-                className="w-full text-xs bg-transparent focus:outline-none text-[#2B0B0D] placeholder-neutral-400"
+                className="w-full text-xs bg-transparent focus:outline-none text-neutral-900 placeholder-neutral-400 font-sans"
               />
               {customerSearchQuery && (
                 <button
@@ -1214,7 +1214,7 @@ export default function AdminPage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-start text-xs border-collapse">
                   <thead>
-                    <tr className="bg-[#FDF4F0] border-b border-[#EBD3C8] text-[#3F1215] font-semibold">
+                    <tr className="bg-neutral-50/80 border-b border-neutral-200 text-neutral-800 font-semibold">
                       <th className="py-3.5 px-5 text-start">{t.tblCustomer}</th>
                       <th className="py-3.5 px-4 text-start">{t.tblPhoneEmail}</th>
                       <th className="py-3.5 px-4 text-start">{t.tblTier}</th>
@@ -1222,7 +1222,7 @@ export default function AdminPage() {
                       <th className="py-3.5 px-5 text-end">{t.tblActions}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#EBD3C8]/50">
+                  <tbody className="divide-y divide-neutral-200/60">
                     {customersList
                       .filter((c) => {
                         if (!customerSearchQuery.trim()) return true;
@@ -1234,14 +1234,14 @@ export default function AdminPage() {
                         );
                       })
                       .map((c) => (
-                        <tr key={c.id} className="hover:bg-[#FDF4F0]/40 transition-colors">
+                        <tr key={c.id} className="hover:bg-neutral-50/80 transition-colors">
                           <td className="py-3.5 px-5">
                             <div className="flex items-center gap-2.5">
-                              <div className="w-8 h-8 rounded-xl bg-[#3F1215] text-[#FEECE2] font-semibold text-xs flex items-center justify-center flex-shrink-0">
+                              <div className="w-8 h-8 rounded-xl bg-[#cb202d] text-white font-semibold text-xs flex items-center justify-center flex-shrink-0 shadow-2xs">
                                 {c.name ? c.name.charAt(0).toUpperCase() : "C"}
                               </div>
                               <div>
-                                <span className="font-semibold text-[#2B0B0D] block">{c.name}</span>
+                                <span className="font-semibold text-neutral-900 block">{c.name}</span>
                                 {c.email && (
                                   <span className="text-[11px] text-neutral-400 font-mono block" dir="ltr">
                                     {c.email}
@@ -1254,11 +1254,11 @@ export default function AdminPage() {
                             {c.phone || "—"}
                           </td>
                           <td className="py-3.5 px-4">
-                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-medium border bg-[#FAF5F2] text-[#3F1215] border-[#EBD3C8]">
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold border bg-rose-50 text-[#cb202d] border-rose-100">
                               {c.tier || "Member"}
                             </span>
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-[#3F1215] font-mono">
+                          <td className="py-3.5 px-4 font-bold text-neutral-900 font-sans">
                             {c.pointsBalance.toLocaleString()} {t.pts}
                           </td>
                           <td className="py-3.5 px-5 text-end">
@@ -1268,7 +1268,7 @@ export default function AdminPage() {
                                 setBroadcastAudience("single");
                                 setActiveTab("broadcast");
                               }}
-                              className="px-3 py-1.5 rounded-xl bg-[#FAF5F2] hover:bg-[#3F1215] text-[#3F1215] hover:text-[#FEECE2] border border-[#EBD3C8] text-[11px] font-medium transition-all flex items-center gap-1.5 ms-auto cursor-pointer shadow-2xs"
+                              className="px-3 py-1.5 rounded-xl bg-neutral-50 hover:bg-[#cb202d] text-neutral-700 hover:text-white border border-neutral-200 text-[11px] font-semibold transition-all flex items-center gap-1.5 ms-auto cursor-pointer shadow-2xs"
                             >
                               <Send className="w-3 h-3" />
                               <span>{t.tblSendNotif}</span>
@@ -1295,7 +1295,7 @@ export default function AdminPage() {
           <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-medium text-neutral-900">
+                <h1 className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
                   {t.rewardsTitle}
                 </h1>
                 <p className="text-xs text-neutral-500 mt-0.5">
@@ -1306,7 +1306,7 @@ export default function AdminPage() {
               <button
                 type="button"
                 onClick={() => setShowAddRewardModal(true)}
-                className="px-4 py-2.5 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-bold hover:bg-[#2B0B0D] transition-all flex items-center gap-2 shadow-xs cursor-pointer self-start sm:self-auto shrink-0 active:scale-98"
+                className="px-4 py-2.5 rounded-xl bg-[#cb202d] text-white text-xs font-bold hover:bg-[#b51a25] transition-all flex items-center gap-2 shadow-xs cursor-pointer self-start sm:self-auto shrink-0 active:scale-98"
               >
                 <Plus className="w-4 h-4" />
                 <span>{t.addReward}</span>
@@ -1314,18 +1314,18 @@ export default function AdminPage() {
             </div>
 
             {rewardsList.length === 0 ? (
-              <div className="bg-white border border-[#EBD3C8] rounded-3xl p-10 text-center shadow-xs">
-                <div className="w-14 h-14 rounded-2xl bg-[#FDF4F0] text-[#3F1215] flex items-center justify-center mx-auto mb-3 border border-[#EBD3C8]">
+              <div className="bg-white border border-neutral-200 rounded-3xl p-10 text-center shadow-xs">
+                <div className="w-14 h-14 rounded-2xl bg-rose-50 text-[#cb202d] flex items-center justify-center mx-auto mb-3 border border-rose-100">
                   <Gift className="w-7 h-7" />
                 </div>
-                <h3 className="text-base font-bold text-[#2B0B0D] mb-1">No Rewards Created Yet</h3>
+                <h3 className="text-base font-bold text-neutral-900 mb-1">No Rewards Created Yet</h3>
                 <p className="text-xs text-neutral-500 max-w-sm mx-auto mb-4">
                   Add items customers can redeem with their loyalty points using photos directly from your device.
                 </p>
                 <button
                   type="button"
                   onClick={() => setShowAddRewardModal(true)}
-                  className="px-4 py-2 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-bold hover:bg-[#2B0B0D] transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#cb202d] text-white text-xs font-bold hover:bg-[#b51a25] transition-colors cursor-pointer"
                 >
                   Create First Reward
                 </button>
@@ -1347,36 +1347,36 @@ export default function AdminPage() {
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-[#3F1215]/30">
+                          <div className="w-full h-full flex items-center justify-center text-neutral-300">
                             <Gift className="w-12 h-12" />
                           </div>
                         )}
 
                         {/* Points Cost Floating Badge */}
-                        <div className="absolute top-3 end-3 px-3 py-1 rounded-full bg-[#3F1215] text-[#FEECE2] shadow-sm flex items-center gap-1 font-mono text-xs font-bold">
+                        <div className="absolute top-3 end-3 px-3 py-1 rounded-full bg-[#cb202d] text-white shadow-sm flex items-center gap-1 font-mono text-xs font-bold">
                           <span>{reward.pointsRequired}</span>
-                          <span className="text-[10px] opacity-80 uppercase">pts</span>
+                          <span className="text-[10px] opacity-90 uppercase font-sans">pts</span>
                         </div>
 
                         {/* Category Floating Badge */}
-                        <div className="absolute top-3 start-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-xs text-[#2B0B0D] border border-neutral-200 text-[10px] font-semibold shadow-2xs">
+                        <div className="absolute top-3 start-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-xs text-neutral-900 border border-neutral-200 text-[10px] font-semibold shadow-2xs">
                           {reward.category}
                         </div>
                       </div>
 
                       {/* Content */}
                       <div className="p-4 sm:p-5">
-                        <h3 className="text-sm sm:text-base font-bold text-[#2B0B0D] leading-snug line-clamp-1 mb-1">
+                        <h3 className="text-sm sm:text-base font-bold text-neutral-900 leading-snug line-clamp-1 mb-1 font-sans">
                           {reward.title}
                         </h3>
-                        <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed min-h-[2rem]">
+                        <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed min-h-[2rem] font-sans">
                           {reward.description || "Specialty loyalty catalogue item."}
                         </p>
                       </div>
                     </div>
 
                     {/* Bottom Controls Bar */}
-                    <div className="px-4 py-3 bg-[#FAF5F2]/50 border-t border-[#EBD3C8]/60 flex items-center justify-between gap-2">
+                    <div className="px-4 py-3 bg-neutral-50/50 border-t border-neutral-200/60 flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
@@ -1390,7 +1390,7 @@ export default function AdminPage() {
                           {reward.isActive ? "● Active" : "○ Disabled"}
                         </button>
 
-                        <span className="text-[11px] text-neutral-400 font-mono" title="Total redemptions">
+                        <span className="text-[11px] text-neutral-400 font-sans" title="Total redemptions">
                           {reward.redemptionCount || 0} claimed
                         </span>
                       </div>
@@ -1416,7 +1416,7 @@ export default function AdminPage() {
           <div className="space-y-6">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-serif font-medium text-neutral-900">
+                <h1 className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
                   {t.cashiersTitle}
                 </h1>
                 <p className="text-xs text-neutral-500 mt-0.5">
@@ -1426,7 +1426,7 @@ export default function AdminPage() {
 
               <button
                 onClick={() => setShowAddCashierModal(true)}
-                className="px-4 py-2 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-medium hover:bg-[#2B0B0D] transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0 active:scale-98"
+                className="px-4 py-2 rounded-xl bg-[#cb202d] text-white text-xs font-semibold hover:bg-[#b51a25] transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0 active:scale-98"
               >
                 <Plus className="w-3.5 h-3.5" />
                 {t.addCashier}
@@ -1436,7 +1436,7 @@ export default function AdminPage() {
             <div className="glass-panel rounded-3xl overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
                 <table className="min-w-[620px] w-full text-start text-xs">
-                  <thead className="bg-[#FAF5F2] border-b border-[#EBD3C8] font-mono text-neutral-500 uppercase tracking-wider">
+                  <thead className="bg-neutral-50/80 border-b border-neutral-200 font-semibold text-neutral-800 font-sans">
                     <tr>
                       <th className="py-3 px-5 text-start">{t.tblStaffMember}</th>
                       <th className="py-3 px-4 text-start">{t.tblUsername}</th>
@@ -1446,13 +1446,13 @@ export default function AdminPage() {
                       <th className="py-3 px-5 text-end">{t.tblActions}</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#EBD3C8]/50">
+                  <tbody className="divide-y divide-neutral-200/60">
                     {cashiersList.map((c) => (
-                      <tr key={c.id} className="hover:bg-[#FDF4F0]/50 transition-colors">
-                        <td className="py-3.5 px-5 font-semibold text-[#2B0B0D]">{c.name}</td>
+                      <tr key={c.id} className="hover:bg-neutral-50/80 transition-colors">
+                        <td className="py-3.5 px-5 font-semibold text-neutral-900">{c.name}</td>
                         <td className="py-3.5 px-4 font-mono text-neutral-600" dir="ltr">{c.username}</td>
                         <td className="py-3.5 px-4 text-neutral-600">{c.branchName}</td>
-                        <td className="py-3.5 px-4 font-mono tracking-wider font-bold text-[#3F1215]" dir="ltr">
+                        <td className="py-3.5 px-4 font-mono tracking-wider font-bold text-neutral-900" dir="ltr">
                           {c.staffPin}
                         </td>
                         <td className="py-3.5 px-4">
@@ -1469,7 +1469,7 @@ export default function AdminPage() {
                         <td className="py-3.5 px-5 text-end">
                           <button
                             onClick={() => handleToggleCashier(c.id, c.isActive)}
-                            className="text-[#3F1215] hover:text-[#2B0B0D] text-xs underline font-medium cursor-pointer"
+                            className="text-[#cb202d] hover:text-[#b51a25] text-xs underline font-semibold cursor-pointer"
                           >
                             {c.isActive ? t.deactivate : t.reactivate}
                           </button>
@@ -1487,10 +1487,10 @@ export default function AdminPage() {
         {activeTab === "broadcast" && (
           <div className="max-w-xl space-y-6">
             <div>
-              <h1 className="text-2xl font-serif font-medium text-neutral-900">
+              <h1 className="text-2xl font-bold font-sans text-neutral-900 tracking-tight">
                 {t.broadcastTitle}
               </h1>
-              <p className="text-xs text-neutral-500 mt-0.5">
+              <p className="text-xs text-neutral-500 mt-0.5 font-sans">
                 {t.broadcastSubtitle}
               </p>
             </div>
@@ -1512,17 +1512,17 @@ export default function AdminPage() {
 
               {/* Audience Selector */}
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-500 mb-2">
+                <label className="block text-xs font-semibold text-neutral-800 mb-2 font-sans">
                   {t.audienceLabel}
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("all")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-medium text-center transition-all cursor-pointer ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs text-center transition-all cursor-pointer ${
                       broadcastAudience === "all"
-                        ? "bg-[#3F1215] text-[#FEECE2] border-[#3F1215] shadow-xs font-semibold"
-                        : "bg-white/60 text-neutral-600 border-[#EBD3C8] hover:bg-white"
+                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-xs font-semibold"
+                        : "bg-white/80 text-neutral-700 border-neutral-200 hover:bg-white font-medium"
                     }`}
                   >
                     {t.audienceAll}
@@ -1530,10 +1530,10 @@ export default function AdminPage() {
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("single")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs font-medium text-center transition-all cursor-pointer ${
+                    className={`py-2.5 px-3 rounded-xl border text-xs text-center transition-all cursor-pointer ${
                       broadcastAudience === "single"
-                        ? "bg-[#3F1215] text-[#FEECE2] border-[#3F1215] shadow-xs font-semibold"
-                        : "bg-white/60 text-neutral-600 border-[#EBD3C8] hover:bg-white"
+                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-xs font-semibold"
+                        : "bg-white/80 text-neutral-700 border-neutral-200 hover:bg-white font-medium"
                     }`}
                   >
                     {t.audienceSingle}
@@ -1544,11 +1544,11 @@ export default function AdminPage() {
               {/* Single Customer Selection Dropdown */}
               {broadcastAudience === "single" && (
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1.5">
+                  <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
                     {t.selectCustomer}
                   </label>
                   {loadingCustomers ? (
-                    <div className="p-3 text-xs text-neutral-400 font-mono">Loading customers directory...</div>
+                    <div className="p-3 text-xs text-neutral-400 font-sans">Loading customers directory...</div>
                   ) : customersList.length === 0 ? (
                     <div className="p-3 text-xs text-amber-800 bg-amber-50/80 rounded-xl border border-amber-200">
                       {t.noCustomersFound}
@@ -1571,7 +1571,7 @@ export default function AdminPage() {
               )}
 
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
                   {t.announcementTitle}
                 </label>
                 <input
@@ -1585,7 +1585,7 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
                   {t.notificationMessage}
                 </label>
                 <textarea
@@ -1599,7 +1599,7 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono uppercase tracking-wider text-neutral-500 mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
                   {t.optionalBonus}
                 </label>
                 <input
@@ -1607,18 +1607,18 @@ export default function AdminPage() {
                   value={broadcastBonus}
                   onChange={(e) => setBroadcastBonus(e.target.value)}
                   placeholder="0"
-                  className="glass-input w-full font-mono"
+                  className="glass-input w-full"
                 />
-                <span className="text-[10px] text-neutral-400 mt-1 block">
+                <span className="text-[11px] text-neutral-500 mt-1 block font-sans">
                   {t.bonusHelp}
                 </span>
               </div>
 
-              <div className="pt-4 border-t border-[#EBD3C8]/60 flex justify-end">
+              <div className="pt-4 border-t border-neutral-200/80 flex justify-end">
                 <button
                   type="submit"
                   disabled={broadcastSending}
-                  className="px-6 py-2.5 rounded-xl bg-[#3F1215] hover:bg-[#2B0B0D] text-[#FEECE2] text-xs font-semibold transition-colors disabled:opacity-50 flex items-center gap-2 shadow-xs cursor-pointer active:scale-98"
+                  className="px-6 py-2.5 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-2 shadow-xs cursor-pointer active:scale-98"
                 >
                   <Send className="w-3.5 h-3.5" />
                   {broadcastSending
@@ -1640,14 +1640,14 @@ export default function AdminPage() {
             dir="ltr"
             className="glass-panel rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-2xl relative my-auto animate-in fade-in zoom-in-95 duration-200"
           >
-            <div className="flex items-center justify-between pb-4 border-b border-[#EBD3C8]/60 mb-5">
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-200 mb-5">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-xl bg-[#3F1215] text-[#FEECE2] flex items-center justify-center shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-[#cb202d] text-white flex items-center justify-center shadow-xs">
                   <Gift className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#2B0B0D]">Add New Reward</h3>
-                  <p className="text-[11px] text-neutral-500">Create a reward with photo directly from your device</p>
+                  <h3 className="text-base font-bold text-neutral-900 font-sans">Add New Reward</h3>
+                  <p className="text-[11px] text-neutral-500 font-sans">Create a reward with photo directly from your device</p>
                 </div>
               </div>
               <button
@@ -1668,7 +1668,7 @@ export default function AdminPage() {
 
             <form onSubmit={handleCreateReward} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#2B0B0D] mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-900 mb-1.5 font-sans">
                   {t.titleLabel} *
                 </label>
                 <input
@@ -1682,7 +1682,7 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#2B0B0D] mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-900 mb-1.5 font-sans">
                   {t.descriptionLabel} (Optional)
                 </label>
                 <input
@@ -1696,12 +1696,12 @@ export default function AdminPage() {
 
               {/* Device-Only Image Upload */}
               <div>
-                <label className="block text-xs font-semibold text-[#2B0B0D] mb-1.5">
+                <label className="block text-xs font-semibold text-neutral-900 mb-1.5 font-sans">
                   Reward Photo (Direct Device Upload)
                 </label>
 
                 {newReward.imageUrl ? (
-                  <div className="relative rounded-2xl overflow-hidden border-2 border-[#EBD3C8] bg-[#FAF5F2] h-48 w-full group shadow-xs">
+                  <div className="relative rounded-2xl overflow-hidden border-2 border-neutral-200 bg-neutral-50 h-48 w-full group shadow-xs">
                     <img
                       src={newReward.imageUrl}
                       alt="Preview"
@@ -1710,8 +1710,8 @@ export default function AdminPage() {
 
                     {/* Desktop Hover Controls Overlay */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center justify-center gap-2.5">
-                      <label className="px-3.5 py-2 rounded-xl bg-white text-[#2B0B0D] text-xs font-bold shadow-md cursor-pointer hover:bg-[#FAF5F2] flex items-center gap-1.5 transition-all">
-                        <Camera className="w-3.5 h-3.5 text-[#3F1215]" />
+                      <label className="px-3.5 py-2 rounded-xl bg-white text-neutral-900 text-xs font-bold shadow-md cursor-pointer hover:bg-neutral-50 flex items-center gap-1.5 transition-all">
+                        <Camera className="w-3.5 h-3.5 text-[#cb202d]" />
                         <span>Change Photo</span>
                         <input
                           type="file"
@@ -1764,19 +1764,19 @@ export default function AdminPage() {
                     </div>
                   </div>
                 ) : (
-                  <label className="w-full py-8 px-4 rounded-2xl border-2 border-dashed border-[#EBD3C8] hover:border-[#3F1215] bg-[#FAF5F2]/60 hover:bg-[#FDF4F0] flex flex-col items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] text-center">
-                    <div className="w-12 h-12 rounded-2xl bg-[#3F1215]/10 text-[#3F1215] flex items-center justify-center">
+                  <label className="w-full py-8 px-4 rounded-2xl border-2 border-dashed border-neutral-200 hover:border-[#cb202d] bg-neutral-50/60 hover:bg-neutral-50 flex flex-col items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.99] text-center">
+                    <div className="w-12 h-12 rounded-2xl bg-rose-50 text-[#cb202d] flex items-center justify-center">
                       <Upload className="w-6 h-6" />
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-[#2B0B0D] block">
+                      <span className="text-xs font-bold text-neutral-900 block font-sans">
                         Tap to select photo from device
                       </span>
-                      <span className="text-[11px] text-neutral-500 block mt-0.5">
+                      <span className="text-[11px] text-neutral-500 block mt-0.5 font-sans">
                         Camera, Photo Library, or Files (JPG, PNG, WebP)
                       </span>
                     </div>
-                    <span className="text-[10px] font-mono text-[#3F1215] bg-[#FEECE2] px-2.5 py-0.5 rounded-full mt-1">
+                    <span className="text-[10px] font-sans text-[#cb202d] bg-rose-50 px-2.5 py-0.5 rounded-full mt-1 font-medium">
                       Auto-compressed on device for instant loading
                     </span>
                     <input
@@ -1794,7 +1794,7 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="block text-xs font-semibold text-[#2B0B0D] mb-1">
+                  <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">
                     {t.tblPointsCost} *
                   </label>
                   <input
@@ -1803,14 +1803,14 @@ export default function AdminPage() {
                     onChange={(e) =>
                       setNewReward({ ...newReward, pointsRequired: parseInt(e.target.value) || 0 })
                     }
-                    className="glass-input w-full font-mono"
+                    className="glass-input w-full font-sans font-semibold"
                     required
                     min={1}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[#2B0B0D] mb-1">
+                  <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">
                     {t.tblCategory} *
                   </label>
                   <CustomGlassSelect
@@ -1827,18 +1827,18 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#EBD3C8]/60">
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-neutral-200/60">
                 <button
                   type="button"
                   onClick={() => setShowAddRewardModal(false)}
-                  className="px-4 py-2.5 rounded-xl border border-[#EBD3C8] text-xs font-medium text-neutral-600 hover:bg-[#FAF5F2] transition-colors cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-neutral-600 hover:bg-neutral-50 transition-colors cursor-pointer font-sans"
                 >
                   {t.cancel}
                 </button>
                 <button
                   type="submit"
                   disabled={createRewardLoading}
-                  className="px-5 py-2.5 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-bold hover:bg-[#2B0B0D] transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-98 flex items-center gap-1.5"
+                  className="px-5 py-2.5 rounded-xl bg-[#cb202d] text-white text-xs font-bold hover:bg-[#b51a25] transition-all cursor-pointer shadow-xs disabled:opacity-50 active:scale-98 flex items-center gap-1.5"
                 >
                   {createRewardLoading ? (
                     <>
@@ -1861,8 +1861,8 @@ export default function AdminPage() {
           <div
             className="glass-panel rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl animate-in fade-in zoom-in-95 duration-200"
           >
-            <div className="flex items-center justify-between pb-4 border-b border-[#EBD3C8]/60 mb-5">
-              <h3 className="text-base font-semibold text-[#2B0B0D] font-serif">{t.addCashierModalTitle}</h3>
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-200 mb-5">
+              <h3 className="text-base font-bold text-neutral-900 font-sans">{t.addCashierModalTitle}</h3>
               <button onClick={() => setShowAddCashierModal(false)} className="p-1.5 rounded-xl text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100/50 cursor-pointer transition-colors">
                 <X className="w-5 h-5" />
               </button>
@@ -1870,19 +1870,19 @@ export default function AdminPage() {
 
             <form onSubmit={handleCreateCashier} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-[#2B0B0D] mb-1">{t.fullName}</label>
+                <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">{t.fullName}</label>
                 <input
                   type="text"
                   value={newCashier.name}
                   onChange={(e) => setNewCashier({ ...newCashier, name: e.target.value })}
                   placeholder="Staff Full Name"
-                  className="glass-input w-full"
+                  className="glass-input w-full font-sans"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#2B0B0D] mb-1">{t.usernameForPOS}</label>
+                <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">{t.usernameForPOS}</label>
                 <input
                   type="text"
                   value={newCashier.username}
@@ -1896,18 +1896,18 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#2B0B0D] mb-1">{t.tblBranch}</label>
+                  <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">{t.tblBranch}</label>
                   <input
                     type="text"
                     value={newCashier.branchName}
                     onChange={(e) => setNewCashier({ ...newCashier, branchName: e.target.value })}
-                    className="glass-input w-full"
+                    className="glass-input w-full font-sans"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#2B0B0D] mb-1">{t.tblPin}</label>
+                  <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">{t.tblPin}</label>
                   <input
                     type="password"
                     maxLength={4}
@@ -1920,17 +1920,17 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-[#EBD3C8]/60 flex justify-end gap-2.5">
+              <div className="pt-4 border-t border-neutral-200/60 flex justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setShowAddCashierModal(false)}
-                  className="px-4 py-2.5 rounded-xl border border-[#EBD3C8] text-xs text-neutral-600 hover:bg-neutral-100/50 cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold text-neutral-600 hover:bg-neutral-50 cursor-pointer font-sans"
                 >
                   {t.cancel}
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#3F1215] text-[#FEECE2] text-xs font-semibold hover:bg-[#2B0B0D] transition-colors shadow-xs cursor-pointer active:scale-98"
+                  className="px-5 py-2.5 rounded-xl bg-[#cb202d] text-white text-xs font-bold hover:bg-[#b51a25] transition-colors shadow-xs cursor-pointer active:scale-98"
                 >
                   {t.createAccount}
                 </button>
