@@ -1,0 +1,52 @@
+{
+  "name": "xian",
+  "short_name": "xian",
+  "description": "xian Restaurante Oriental Loyalty Pass & Rewards",
+  "start_url": "/customer",
+  "scope": "/customer",
+  "display": "standalone",
+  "background_color": "#f7f2e4",
+  "theme_color": "#cb202d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Customer Digital Pass",
+      "short_name": "Customer Pass",
+      "description": "Open Member Loyalty Pass",
+      "url": "/customer",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Cashier POS Terminal",
+      "short_name": "Cashier POS",
+      "description": "Open Cashier Checkout Terminal",
+      "url": "/cashier",
+      "icons": [{ "src": "/icon-cashier-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
