@@ -70,9 +70,10 @@ export default function CashierPage() {
   const [loginLoading, setLoginLoading] = useState(false);
 
   // POS Workflow State
-  const [activeMode, setActiveMode] = useState<"pin" | "qr">("pin");
+  const [activeMode, setActiveMode] = useState<"pin" | "phone" | "qr">("pin");
   const [showCameraScanner, setShowCameraScanner] = useState(false);
   const [pinQuery, setPinQuery] = useState("");
+  const [phoneQuery, setPhoneQuery] = useState("");
   const [qrQuery, setQrQuery] = useState("");
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupError, setLookupError] = useState<string | null>(null);
@@ -304,6 +305,7 @@ export default function CashierPage() {
     setIdentifiedCustomer(null);
     setBillAmount("");
     setPinQuery("");
+    setPhoneQuery("");
     setQrQuery("");
     setLookupError(null);
     setTransactError(null);
@@ -624,21 +626,37 @@ export default function CashierPage() {
         {!identifiedCustomer && (
           <div className="w-full max-w-md mx-auto space-y-3.5">
             {/* Mode Switcher Buttons */}
-            <div className="grid grid-cols-2 gap-2 glass-panel-subtle p-1 rounded-2xl border border-neutral-200">
+            <div className="grid grid-cols-3 gap-1.5 glass-panel-subtle p-1 rounded-2xl border border-neutral-200">
               <button
                 type="button"
                 onClick={() => {
                   setActiveMode("pin");
                   setLookupError(null);
                 }}
-                className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer font-sans ${
+                className={`py-2 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer font-sans ${
                   activeMode === "pin"
                     ? "bg-[#cb202d] text-white shadow-xs"
                     : "text-neutral-600 hover:text-neutral-900"
                 }`}
               >
-                <Hash className="w-4 h-4" />
-                <span>Customer PIN</span>
+                <Hash className="w-3.5 h-3.5" />
+                <span>PIN</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveMode("phone");
+                  setLookupError(null);
+                }}
+                className={`py-2 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer font-sans ${
+                  activeMode === "phone"
+                    ? "bg-[#cb202d] text-white shadow-xs"
+                    : "text-neutral-600 hover:text-neutral-900"
+                }`}
+              >
+                <Smartphone className="w-3.5 h-3.5" />
+                <span>Phone</span>
               </button>
 
               <button
@@ -648,14 +666,14 @@ export default function CashierPage() {
                   setShowCameraScanner(true);
                   setLookupError(null);
                 }}
-                className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer font-sans ${
+                className={`py-2 px-2 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer font-sans ${
                   activeMode === "qr"
                     ? "bg-[#cb202d] text-white shadow-xs"
                     : "text-neutral-600 hover:text-neutral-900"
                 }`}
               >
-                <Camera className="w-4 h-4" />
-                <span>Scan QR with Camera</span>
+                <Camera className="w-3.5 h-3.5" />
+                <span>Scan QR</span>
               </button>
             </div>
 
@@ -756,7 +774,108 @@ export default function CashierPage() {
               </div>
             )}
 
-            {/* MODE 2: QR SCANNER BUTTON & MANUAL TOKEN */}
+            {/* MODE 2: 10-DIGIT JORDANIAN PHONE LOOKUP */}
+            {activeMode === "phone" && (
+              <div className="glass-panel rounded-3xl p-4 sm:p-5 shadow-lg space-y-4">
+                <div className="text-center">
+                  <span className="text-xs font-semibold text-neutral-500 block mb-2 font-sans">
+                    Enter Customer Phone (079, 078, 077)
+                  </span>
+
+                  <div className="relative max-w-xs mx-auto">
+                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs font-bold text-neutral-500 border-r border-neutral-200 pr-2 pointer-events-none">
+                      <span>🇯🇴</span>
+                      <span>+962</span>
+                    </div>
+                    <input
+                      type="tel"
+                      value={phoneQuery}
+                      onChange={(e) => {
+                        setPhoneQuery(e.target.value);
+                        setLookupError(null);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") performLookup(phoneQuery);
+                      }}
+                      placeholder="079 123 4567"
+                      className="w-full pl-22 pr-4 py-3 rounded-2xl glass-input text-base font-mono font-bold text-neutral-900 tracking-wider text-center"
+                      autoFocus
+                    />
+                  </div>
+                </div>
+
+                {/* Tactile On-Screen Numpad for Phone Fast Entry */}
+                <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto pt-1">
+                  {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => {
+                        if (phoneQuery.length < 10) {
+                          const next = phoneQuery + num;
+                          setPhoneQuery(next);
+                          if (next.length === 10) performLookup(next);
+                        }
+                      }}
+                      disabled={lookupLoading}
+                      className="h-11 sm:h-12 rounded-2xl glass-panel-subtle hover:bg-white/90 active:scale-95 text-neutral-900 font-bold text-base font-mono flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                    >
+                      {num}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setPhoneQuery("")}
+                    className="h-11 sm:h-12 rounded-2xl glass-panel-subtle hover:bg-neutral-200/50 active:scale-95 text-neutral-500 font-semibold text-xs flex items-center justify-center transition-all cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (phoneQuery.length < 10) {
+                        const next = phoneQuery + "0";
+                        setPhoneQuery(next);
+                        if (next.length === 10) performLookup(next);
+                      }
+                    }}
+                    disabled={lookupLoading}
+                    className="h-11 sm:h-12 rounded-2xl glass-panel-subtle hover:bg-white/90 active:scale-95 text-neutral-900 font-bold text-base font-mono flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                  >
+                    0
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPhoneQuery((prev) => prev.slice(0, -1))}
+                    className="h-11 sm:h-12 rounded-2xl glass-panel-subtle hover:bg-red-50/80 active:scale-95 text-neutral-600 hover:text-red-600 font-bold flex items-center justify-center transition-all cursor-pointer"
+                  >
+                    <Delete className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Search Button */}
+                <button
+                  type="button"
+                  onClick={() => performLookup(phoneQuery)}
+                  disabled={lookupLoading || phoneQuery.replace(/\D/g, "").length < 7}
+                  className="w-full py-3.5 rounded-2xl bg-[#cb202d] text-white text-xs font-bold hover:bg-[#b51a25] transition-all disabled:opacity-40 cursor-pointer shadow-xs flex items-center justify-center gap-2 active:scale-98 font-sans"
+                >
+                  {lookupLoading ? (
+                    <>
+                      <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                      <span>Searching customer...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Search by Phone</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* MODE 3: QR SCANNER BUTTON & MANUAL TOKEN */}
             {activeMode === "qr" && (
               <div className="glass-panel rounded-3xl p-5 sm:p-6 shadow-lg space-y-4 text-center">
                 <div className="w-16 h-16 rounded-full bg-rose-50 border border-rose-100 text-[#cb202d] flex items-center justify-center mx-auto">

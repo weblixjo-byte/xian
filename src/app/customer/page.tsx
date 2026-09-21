@@ -19,6 +19,7 @@ import {
   AlertCircle,
   CheckCircle2,
   CheckCheck,
+  Smartphone,
 } from "lucide-react";
 
 // Official Google Multi-Color Icon
@@ -150,13 +151,25 @@ export default function CustomerPage() {
   const [googleRedirecting, setGoogleRedirecting] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
-  // Helper for dual persistence headers
+  // Mandatory Jordanian Phone Onboarding State
+  const [phoneInput, setPhoneInput] = useState("");
+  const [phoneSubmitting, setPhoneSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+
+  // Android-Only PWA 1-Click Install Banner State
+  const [showAndroidInstallBanner, setShowAndroidInstallBanner] = useState(false);
+  const [androidDeferredPrompt, setAndroidDeferredPrompt] = useState<any>(null);
+
+  // Helper for dual persistence headers (Bearer + x-customer-auth + x-customer-id)
   const getAuthHeaders = (): Record<string, string> => {
     const headers: Record<string, string> = {};
     if (typeof window !== "undefined") {
       const savedToken = localStorage.getItem(CUSTOMER_TOKEN_KEY);
       const savedId = localStorage.getItem(CUSTOMER_ID_KEY);
-      if (savedToken) headers["x-customer-auth"] = savedToken;
+      if (savedToken) {
+        headers["Authorization"] = `Bearer ${savedToken}`;
+        headers["x-customer-auth"] = savedToken;
+      }
       if (savedId) headers["x-customer-id"] = savedId;
     }
     return headers;
@@ -323,9 +336,10 @@ export default function CustomerPage() {
     // 0. Instant OAuth token capture if arriving from Google OAuth redirect
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const authToken = params.get("auth_token");
+      const rawAuthToken = params.get("auth_token");
       const userId = params.get("user_id");
-      if (authToken) {
+      if (rawAuthToken) {
+        const authToken = decodeURIComponent(rawAuthToken);
         localStorage.setItem(CUSTOMER_TOKEN_KEY, authToken);
         if (userId) localStorage.setItem(CUSTOMER_ID_KEY, userId);
         const cleanUrl = window.location.pathname;
@@ -369,6 +383,15 @@ export default function CustomerPage() {
     if (typeof document !== "undefined") {
       document.addEventListener("visibilitychange", handleVisibilityChange);
       window.addEventListener("focus", handleVisibilityChange);
+    }
+
+    // Capture PWA install prompt event
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setAndroidDeferredPrompt(e);
+    };
+    if (typeof window !== "undefined") {
+      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     }
 
     // Check if redirected with OAuth error parameter
@@ -424,6 +447,7 @@ export default function CustomerPage() {
       if (typeof document !== "undefined") {
         document.removeEventListener("visibilitychange", handleVisibilityChange);
         window.removeEventListener("focus", handleVisibilityChange);
+        window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       }
     };
   }, []);
@@ -440,6 +464,113 @@ export default function CustomerPage() {
       ("standalone" in window.navigator && (window.navigator as any).standalone) ||
       window.matchMedia("(display-mode: standalone)").matches
     );
+  };
+
+  // Android-Only PWA 1-Click Install Banner Trigger Logic
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isAndroid = /android/i.test(window.navigator.userAgent);
+    const seen = localStorage.getItem("pwa_android_install_prompt_seen") === "true";
+    const standalone = isStandalone();
+
+    // Strictly Android, NOT iOS, NOT standalone, not previously seen, and ONLY after phone registration is complete
+    if (isAndroid && !isIosDevice() && !standalone && !seen && customer && customer.phone) {
+      const timer = setTimeout(() => {
+        setShowAndroidInstallBanner(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [customer]);
+
+  const handleDismissAndroidBanner = () => {
+    setShowAndroidInstallBanner(false);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pwa_android_install_prompt_seen", "true");
+    }
+  };
+
+  const handleInstallAndroidApp = async () => {
+    if (androidDeferredPrompt) {
+      try {
+        await androidDeferredPrompt.prompt();
+        const choice = await androidDeferredPrompt.userChoice;
+        if (choice && choice.outcome === "accepted") {
+          confetti({ particleCount: 50, spread: 60 });
+        }
+      } catch (e) {
+        console.warn("PWA install prompt error:", e);
+      }
+    }
+    handleDismissAndroidBanner();
+  };
+
+  // Jordanian Mobile Normalization and Strict Validation
+  const rawCleanPhone = phoneInput.replace(/\D/g, "");
+  let normalizedJordanPhone = rawCleanPhone;
+  if (normalizedJordanPhone.startsWith("00962")) normalizedJordanPhone = normalizedJordanPhone.slice(5);
+  else if (normalizedJordanPhone.startsWith("962")) normalizedJordanPhone = normalizedJordanPhone.slice(3);
+  if (
+    (normalizedJordanPhone.startsWith("77") ||
+      normalizedJordanPhone.startsWith("78") ||
+      normalizedJordanPhone.startsWith("79")) &&
+    normalizedJordanPhone.length === 9
+  ) {
+    normalizedJordanPhone = "0" + normalizedJordanPhone;
+  }
+  const isPhoneValid = /^07[789]\d{7}$/.test(normalizedJordanPhone);
+
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isPhoneValid) {
+      setPhoneError(
+        "Please enter a valid 10-digit Jordanian mobile number starting with 079, 078, or 077."
+      );
+      return;
+    }
+
+    setPhoneSubmitting(true);
+    setPhoneError(null);
+
+    try {
+      const headers = getAuthHeaders();
+      const res = await fetch("/api/customer/phone", {
+        method: "POST",
+        headers: {
+          ...headers,
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ phone: normalizedJordanPhone }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setPhoneError(data.error || "Failed to update phone number.");
+        return;
+      }
+
+      // Celebrate onboarding completion with confetti
+      confetti({ particleCount: 75, spread: 80, origin: { y: 0.6 } });
+      setPushSuccessToast("Phone number registered successfully! Your pass is now active.");
+      setTimeout(() => setPushSuccessToast(null), 4000);
+
+      // Save token and update customer state
+      if (data.token && typeof window !== "undefined") {
+        localStorage.setItem(CUSTOMER_TOKEN_KEY, data.token);
+      }
+      if (customer) {
+        const updated = { ...customer, phone: normalizedJordanPhone };
+        setCustomer(updated);
+        if (typeof window !== "undefined") {
+          localStorage.setItem(CUSTOMER_CACHE_KEY, JSON.stringify(updated));
+        }
+      }
+      setPhoneInput("");
+    } catch (err: any) {
+      setPhoneError(err.message || "A network error occurred. Please try again.");
+    } finally {
+      setPhoneSubmitting(false);
+    }
   };
 
 
@@ -1444,6 +1575,160 @@ export default function CustomerPage() {
             >
               Done & Return to Pass
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* MANDATORY NO-SKIP JORDANIAN PHONE ONBOARDING MODAL */}
+      {!loading && customer && !customer.phone && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-white/90 animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="text-center mb-6">
+              <div className="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-100 text-[#cb202d] flex items-center justify-center mx-auto mb-3 shadow-xs">
+                <Smartphone className="w-7 h-7" />
+              </div>
+              <h2 className="text-xl font-bold text-neutral-900 font-sans tracking-tight">
+                Register Mobile Number
+              </h2>
+              <p className="text-xs text-neutral-500 mt-1 max-w-xs mx-auto leading-relaxed">
+                To activate your digital loyalty card and earn points at the cashier, please link your Jordanian mobile number.
+              </p>
+            </div>
+
+            {phoneError && (
+              <div className="mb-4 p-3.5 rounded-2xl bg-red-50/90 border border-red-200 text-red-700 text-xs flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                <span className="font-medium">{phoneError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handlePhoneSubmit} className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-semibold text-neutral-700 font-sans">
+                    Jordanian Mobile Number
+                  </label>
+                  <span
+                    className={`text-xs font-mono font-bold transition-colors ${
+                      isPhoneValid
+                        ? "text-emerald-600"
+                        : normalizedJordanPhone.length === 10
+                        ? "text-red-600"
+                        : "text-neutral-400"
+                    }`}
+                  >
+                    {normalizedJordanPhone.length}/10 digits
+                  </span>
+                </div>
+
+                <div className="relative flex items-center">
+                  <div className="absolute left-3.5 flex items-center gap-1.5 text-xs font-bold text-neutral-600 border-r border-neutral-200 pr-2.5 pointer-events-none">
+                    <span className="text-neutral-400 text-sm">🇯🇴</span>
+                    <span className="font-mono">+962</span>
+                  </div>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="tel"
+                    value={phoneInput}
+                    onChange={(e) => {
+                      setPhoneInput(e.target.value);
+                      setPhoneError(null);
+                    }}
+                    placeholder="079 123 4567"
+                    className={`w-full pl-22 pr-10 py-3.5 rounded-2xl glass-input text-sm font-mono tracking-wider font-semibold text-neutral-900 ${
+                      isPhoneValid
+                        ? "border-emerald-500 focus:border-emerald-600"
+                        : ""
+                    }`}
+                    autoFocus
+                    required
+                  />
+                  <div className="absolute right-3.5">
+                    {isPhoneValid ? (
+                      <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </div>
+                    ) : normalizedJordanPhone.length === 10 && !isPhoneValid ? (
+                      <div className="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center">
+                        <X className="w-3.5 h-3.5" />
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+                <p className="text-[11px] text-neutral-400 mt-1.5 font-sans">
+                  Must start with <span className="font-semibold text-neutral-600">079</span>, <span className="font-semibold text-neutral-600">078</span>, or <span className="font-semibold text-neutral-600">077</span> (10 digits total).
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={phoneSubmitting || !isPhoneValid}
+                className="w-full py-3.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] active:scale-98 text-white text-xs font-bold transition-all shadow-xs cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-sans"
+              >
+                {phoneSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                    <span>Verifying & Saving...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Confirm & Activate Pass</span>
+                    <Sparkles className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <div className="mt-4 pt-4 border-t border-neutral-100/80 flex items-center justify-center gap-2 text-[11px] text-neutral-400 font-sans">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Official Mobile Verification • No SMS required</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 1-CLICK ANDROID-ONLY FLOATING PWA INSTALL BANNER */}
+      {showAndroidInstallBanner && (
+        <div className="fixed bottom-24 left-4 right-4 max-w-md mx-auto z-40 animate-in slide-in-from-bottom-5 duration-300">
+          <div className="glass-panel rounded-2xl p-4 shadow-2xl border border-white/90 flex items-center gap-3">
+            <div className="relative shrink-0">
+              <div className="w-12 h-12 rounded-2xl bg-white border border-neutral-200/80 p-1 flex items-center justify-center shadow-xs overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logo.png" alt="xian" className="w-full h-full object-contain" />
+              </div>
+              <span className="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-[#cb202d] text-white text-[9px] font-extrabold uppercase tracking-wide shadow-2xs">
+                1-Tap
+              </span>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h4 className="text-xs font-bold text-neutral-900 truncate font-sans">
+                Install {config.storeName} App
+              </h4>
+              <p className="text-[11px] text-neutral-500 leading-tight truncate font-sans">
+                Fast 1-tap pass access & instant alerts
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={handleDismissAndroidBanner}
+                className="px-2.5 py-2 rounded-xl text-neutral-400 hover:text-neutral-700 text-xs font-medium transition-colors cursor-pointer"
+              >
+                Not now
+              </button>
+              <button
+                type="button"
+                onClick={handleInstallAndroidApp}
+                className="px-3.5 py-2 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 flex items-center gap-1.5 font-sans"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Install</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

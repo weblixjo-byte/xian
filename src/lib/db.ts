@@ -121,6 +121,17 @@ async function initMongoData() {
 }
 
 // Unified Data Access Layer (DAL) seamlessly delegating to Mongoose or Memory Store
+export function normalizeJordanPhone(phone: string): string {
+  let cleaned = phone.replace(/\D/g, "");
+  if (cleaned.startsWith("00962")) cleaned = cleaned.slice(5);
+  else if (cleaned.startsWith("962")) cleaned = cleaned.slice(3);
+
+  if ((cleaned.startsWith("77") || cleaned.startsWith("78") || cleaned.startsWith("79")) && cleaned.length === 9) {
+    cleaned = "0" + cleaned;
+  }
+  return cleaned;
+}
+
 export const dbService = {
   // Store Config
   async getConfig(): Promise<ITenantConfig> {
@@ -166,17 +177,31 @@ export const dbService = {
   },
 
   async findUserByPhone(phone: string): Promise<IUser | null> {
-    const cleanPhone = phone.replace(/\D/g, "");
+    const rawClean = phone.replace(/\D/g, "");
+    const normalized = normalizeJordanPhone(phone);
+    const searchPart = normalized.startsWith("0") ? normalized.slice(1) : normalized;
     const { isMongoose } = await connectDB();
     if (isMongoose) {
       try {
-        const user = await User.findOne({ phone: { $regex: cleanPhone } }).lean();
+        const user = await User.findOne({
+          $or: [
+            { phone: normalized },
+            { phone: rawClean },
+            { phone: { $regex: searchPart } },
+          ],
+        }).lean();
         if (user) return JSON.parse(JSON.stringify(user));
       } catch (e) {
         console.warn(e);
       }
     }
-    const found = memoryStore.users.find((u) => u.phone && u.phone.replace(/\D/g, "") === cleanPhone);
+    const found = memoryStore.users.find(
+      (u) =>
+        u.phone &&
+        (u.phone === normalized ||
+          u.phone.replace(/\D/g, "") === rawClean ||
+          u.phone.replace(/\D/g, "").includes(searchPart))
+    );
     return found ? { ...found } : null;
   },
 

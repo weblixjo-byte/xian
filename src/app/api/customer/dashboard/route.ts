@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { dbService } from "@/lib/db";
 
-import { signToken, TOKEN_COOKIE_NAME } from "@/lib/auth";
+import { signToken, TOKEN_COOKIE_NAME, PERMANENT_COOKIE_MAX_AGE } from "@/lib/auth";
 
 export async function GET(req: Request) {
   try {
@@ -78,7 +78,7 @@ export async function GET(req: Request) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 365 * 24 * 60 * 60, // 1 year
+      maxAge: PERMANENT_COOKIE_MAX_AGE, // 10 years permanent session
       path: "/",
     });
 

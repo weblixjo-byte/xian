@@ -121,8 +121,11 @@ const i18n = {
     optionalBonus: "Optional Bonus Points Gift",
     bonusHelp: "Set to 0 for a standard notification without a points grant.",
     audienceLabel: "Target Audience",
-    audienceAll: "All Members (Broadcast)",
-    audienceSingle: "Specific Member (Direct)",
+    audienceAll: "All Members",
+    audienceGold: "VIP / Gold Tier",
+    audienceSilver: "Silver Tier",
+    audienceInactive: "Inactive Members",
+    audienceSingle: "Specific Member",
     selectCustomer: "Select Customer",
     noCustomersFound: "No registered customers found",
     sendBroadcast: "Send Broadcast to All Members",
@@ -226,8 +229,11 @@ const i18n = {
     optionalBonus: "Optional Bonus Points Gift",
     bonusHelp: "Set to 0 for a standard notification without a points grant.",
     audienceLabel: "Target Audience",
-    audienceAll: "All Members (Broadcast)",
-    audienceSingle: "Specific Member (Direct)",
+    audienceAll: "All Members",
+    audienceGold: "VIP / Gold Tier",
+    audienceSilver: "Silver Tier",
+    audienceInactive: "Inactive Members",
+    audienceSingle: "Specific Member",
     selectCustomer: "Select Customer",
     noCustomersFound: "No registered customers found",
     sendBroadcast: "Send Broadcast to All Members",
@@ -311,7 +317,7 @@ export default function AdminPage() {
   const [loadingCustomers, setLoadingCustomers] = useState(false);
 
   // Broadcast & Targeted Notification State
-  const [broadcastAudience, setBroadcastAudience] = useState<"all" | "single">("all");
+  const [broadcastAudience, setBroadcastAudience] = useState<"all" | "gold" | "silver" | "inactive" | "single">("all");
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
   const [broadcastTitle, setBroadcastTitle] = useState("");
   const [broadcastMessage, setBroadcastMessage] = useState("");
@@ -1549,33 +1555,74 @@ export default function AdminPage() {
                 </div>
               )}
 
-              {/* Audience Selector */}
+              {/* Audience Selector with Modern Glass Pills */}
               <div>
                 <label className="block text-xs font-semibold text-neutral-800 mb-2 font-sans">
                   {t.audienceLabel}
                 </label>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("all")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs text-center transition-all cursor-pointer ${
+                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                       broadcastAudience === "all"
-                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-xs font-semibold"
-                        : "bg-white/80 text-neutral-700 border-neutral-200 hover:bg-white font-medium"
+                        ? "glass-pill-active"
+                        : "glass-pill text-neutral-700"
                     }`}
                   >
                     {t.audienceAll}
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setBroadcastAudience("gold")}
+                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      broadcastAudience === "gold"
+                        ? "glass-pill-active"
+                        : "glass-pill text-amber-800 border-amber-200"
+                    }`}
+                  >
+                    <span>⭐</span>
+                    <span>{t.audienceGold}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setBroadcastAudience("silver")}
+                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      broadcastAudience === "silver"
+                        ? "glass-pill-active"
+                        : "glass-pill text-slate-700 border-slate-200"
+                    }`}
+                  >
+                    <span>🥈</span>
+                    <span>{t.audienceSilver}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setBroadcastAudience("inactive")}
+                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                      broadcastAudience === "inactive"
+                        ? "glass-pill-active"
+                        : "glass-pill text-neutral-600 border-neutral-200"
+                    }`}
+                  >
+                    <span>💤</span>
+                    <span>{t.audienceInactive}</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("single")}
-                    className={`py-2.5 px-3 rounded-xl border text-xs text-center transition-all cursor-pointer ${
+                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                       broadcastAudience === "single"
-                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-xs font-semibold"
-                        : "bg-white/80 text-neutral-700 border-neutral-200 hover:bg-white font-medium"
+                        ? "glass-pill-active"
+                        : "glass-pill text-neutral-700"
                     }`}
                   >
-                    {t.audienceSingle}
+                    <span>👤</span>
+                    <span>{t.audienceSingle}</span>
                   </button>
                 </div>
               </div>
@@ -1664,6 +1711,12 @@ export default function AdminPage() {
                     ? t.sendingBroadcast
                     : broadcastAudience === "single"
                     ? t.sendToSingle
+                    : broadcastAudience === "gold"
+                    ? "Dispatch Promo to Gold VIPs"
+                    : broadcastAudience === "silver"
+                    ? "Dispatch Promo to Silver Members"
+                    : broadcastAudience === "inactive"
+                    ? "Dispatch Re-engagement Promo"
                     : t.sendBroadcast}
                 </button>
               </div>

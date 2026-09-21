@@ -134,6 +134,7 @@ export async function GET(req: Request) {
       role: "customer",
       name: user.name,
       email: user.email,
+      phone: user.phone,
       avatarUrl: user.avatarUrl,
       googleId: user.googleId,
       tier: user.tier,
