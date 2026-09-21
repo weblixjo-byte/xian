@@ -984,9 +984,9 @@ export default function CashierPage() {
                   </div>
                 </div>
                 <div className="text-right bg-white/80 px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs">
-                  <span className="text-[10px] text-neutral-400 block font-medium font-sans">Cash Discount Value</span>
+                  <span className="text-[10px] text-neutral-400 block font-medium font-sans">Membership Tier</span>
                   <span className="text-xs font-bold text-[#cb202d] font-sans">
-                    {formatCurrency(identifiedCustomer.currencyValue)}
+                    {identifiedCustomer.tier || "Member"}
                   </span>
                 </div>
               </div>
@@ -1143,10 +1143,10 @@ export default function CashierPage() {
               <div className="glass-panel rounded-3xl p-5 sm:p-6 shadow-lg space-y-4">
                 <div>
                   <h4 className="text-sm font-bold text-neutral-900 mb-1 font-sans">
-                    Redeem Reward or Instant Discount
+                    Redeem Reward
                   </h4>
                   <p className="text-[11px] text-neutral-500 font-sans">
-                    Deduct points from customer balance for a beverage, treat, or bill discount.
+                    Deduct points from customer balance to grant an authentic dish, treat, or reward item.
                   </p>
                 </div>
 
@@ -1160,7 +1160,7 @@ export default function CashierPage() {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-xs font-semibold text-neutral-700 mb-1.5 font-sans">
-                      Select Reward or Discount Reason
+                      Select Reward Item
                     </label>
                     <CustomGlassSelect
                       value={rewardTitle}
@@ -1179,7 +1179,6 @@ export default function CashierPage() {
                           badge: `${r.pointsRequired} pts`,
                           subtitle: r.category,
                         })),
-                        { value: "Custom Bill Discount", label: "Custom Bill Discount", subtitle: "Manual adjustment" },
                       ]}
                     />
                   </div>

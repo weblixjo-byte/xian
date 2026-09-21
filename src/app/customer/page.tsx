@@ -1150,10 +1150,10 @@ export default function CustomerPage() {
 
                 <div className="text-right">
                   <span className="text-xs font-semibold text-neutral-500 block mb-0.5 font-sans">
-                    Cash Valuation
+                    Available Rewards
                   </span>
                   <span className="inline-block px-2.5 py-1 rounded-lg bg-rose-50 border border-rose-100 text-xs font-bold text-[#cb202d] font-sans">
-                    = {formatCurrency(customer.currencyValue)}
+                    {rewards.filter((r) => r.canRedeem).length} Unlocked
                   </span>
                 </div>
               </div>
@@ -1197,8 +1197,8 @@ export default function CustomerPage() {
                 </span>
               </div>
               <div className="text-end">
-                <span className="text-xs text-emerald-800 font-semibold bg-emerald-50/80 border border-emerald-200 px-3 py-1 rounded-full block font-sans">
-                  = {formatCurrency(customer.currencyValue)} instant discount
+                <span className="text-xs text-rose-800 font-semibold bg-rose-50 border border-rose-200 px-3 py-1 rounded-full block font-sans">
+                  {rewards.filter((r) => r.canRedeem).length} of {rewards.length} Rewards Unlocked
                 </span>
               </div>
             </div>
