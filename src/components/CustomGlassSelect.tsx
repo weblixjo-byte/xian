@@ -78,14 +78,14 @@ export default function CustomGlassSelect({
         type="button"
         disabled={disabled}
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
-        className={`w-full glass-select flex items-center justify-between text-left cursor-pointer transition-all ${
-          isOpen ? "ring-2 ring-[#cb202d]/20 border-[#cb202d]" : ""
+        className={`w-full glass-select flex items-center justify-between text-left cursor-pointer transition-all rounded-2xl py-3 px-4 ${
+          isOpen ? "ring-4 ring-[#cb202d]/15 border-[#cb202d] bg-white shadow-sm" : "hover:bg-white hover:border-[#cb202d]/40"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
-        <div className="flex items-center gap-2 min-w-0 overflow-hidden pr-2 flex-1">
+        <div className="flex items-center gap-2.5 min-w-0 overflow-hidden pr-2 flex-1">
           {selectedOption ? (
-            <div className="flex items-center justify-between gap-2 w-full min-w-0">
-              <span className="truncate font-medium text-neutral-900 text-xs sm:text-sm">
+            <div className="flex items-center justify-between gap-2.5 w-full min-w-0">
+              <span className="truncate font-semibold text-neutral-900 text-xs sm:text-sm">
                 {selectedOption.label}
               </span>
               {selectedOption.subtitle && (
@@ -94,20 +94,20 @@ export default function CustomGlassSelect({
                 </span>
               )}
               {selectedOption.badge && (
-                <span className="text-[10px] font-bold font-sans px-2 py-0.5 rounded-md bg-rose-50 text-[#cb202d] border border-rose-200 shrink-0 ml-auto mr-1">
+                <span className="text-[10px] font-bold font-sans px-2.5 py-0.5 rounded-full bg-rose-50 text-[#cb202d] border border-rose-200 shrink-0 ml-auto mr-1 shadow-2xs">
                   {selectedOption.badge}
                 </span>
               )}
             </div>
           ) : (
-            <span className="text-neutral-400 text-xs sm:text-sm font-normal">
+            <span className="text-neutral-400 text-xs sm:text-sm font-medium">
               {placeholder}
             </span>
           )}
         </div>
 
         <ChevronDown
-          className={`w-4 h-4 text-neutral-500 shrink-0 transition-transform duration-200 ${
+          className={`w-4 h-4 text-neutral-400 shrink-0 transition-transform duration-200 ${
             isOpen ? "rotate-180 text-[#cb202d]" : ""
           }`}
         />

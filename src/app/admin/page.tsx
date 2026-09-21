@@ -1606,7 +1606,7 @@ export default function AdminPage() {
                     <CustomGlassSelect
                       value={selectedCustomerId}
                       onChange={setSelectedCustomerId}
-                      placeholder={`-- ${t.selectCustomer} --`}
+                      placeholder={`${t.selectCustomer}...`}
                       searchable={true}
                       options={customersList.map((c) => ({
                         value: c.id,
@@ -1651,20 +1651,14 @@ export default function AdminPage() {
                 <label className="block text-xs font-bold text-neutral-800 mb-1.5 font-sans">
                   {t.optionalBonus}
                 </label>
-                <div className="relative flex items-center max-w-xs">
-                  <div className="absolute left-3.5 flex items-center gap-1 text-xs font-bold text-amber-700 pointer-events-none">
-                    <span>⭐</span>
-                    <span>Points</span>
-                  </div>
-                  <input
-                    type="number"
-                    min="0"
-                    value={broadcastBonus}
-                    onChange={(e) => setBroadcastBonus(e.target.value)}
-                    placeholder="0"
-                    className="glass-input w-full pl-22 font-mono font-bold"
-                  />
-                </div>
+                <input
+                  type="number"
+                  min="0"
+                  value={broadcastBonus}
+                  onChange={(e) => setBroadcastBonus(e.target.value)}
+                  placeholder="0"
+                  className="glass-input w-full max-w-xs font-mono font-bold text-sm"
+                />
                 <span className="text-[11px] text-neutral-500 mt-1.5 block font-sans">
                   {t.bonusHelp}
                 </span>
