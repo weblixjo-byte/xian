@@ -55,7 +55,11 @@ export async function sendWebPushToSubscriptions(
               auth: sub.keys.auth,
             },
           },
-          payloadString
+          payloadString,
+          {
+            TTL: 86400, // Keep queued for 24h if phone is offline, delivers instantly upon reconnection
+            urgency: "high", // High priority: immediately wakes phone from sleep/doze mode to ring & show banner
+          }
         );
         sentCount++;
       } catch (err: any) {
