@@ -366,11 +366,12 @@ export default function CustomerPage() {
     loadRewards();
     loadNotifications();
 
-    // Fast polling every 3 seconds for instant real-time sync with cashier POS
+    // Smart Visible-Only Polling (every 5s, strictly active only when tab/screen is visible)
     const interval = setInterval(() => {
-      loadDashboard();
-      loadNotifications();
-    }, 3000);
+      if (typeof document !== "undefined" && document.visibilityState === "visible") {
+        loadDashboard();
+      }
+    }, 5000);
 
     // Instant refresh when user unlocks phone or switches back to tab
     const handleVisibilityChange = () => {
