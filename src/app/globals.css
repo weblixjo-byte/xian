@@ -68,18 +68,28 @@ h1, h2, h3, h4, h5, h6, .font-serif, .font-brand, .font-subbrand {
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(235, 211, 200, 0.85);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(235, 211, 200, 0.95);
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.35rem;
+  color: #171717;
+  box-shadow: 0 1px 3px 0 rgba(63, 18, 21, 0.03);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.99);
   border-color: #cb202d;
-  box-shadow: 0 0 0 3px rgba(203, 32, 45, 0.15);
+  box-shadow: 0 0 0 3px rgba(203, 32, 45, 0.15), 0 2px 8px 0 rgba(203, 32, 45, 0.05);
   outline: none;
+}
+
+.glass-input::placeholder {
+  color: #a3a3a3;
 }
 
 /* Custom Sleek Dropdown Select (Cross-Platform) */

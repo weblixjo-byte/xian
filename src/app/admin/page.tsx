@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Gift,
   Users,
+  User,
   Send,
   Coffee,
   DollarSign,
@@ -317,7 +318,7 @@ export default function AdminPage() {
   const [loadingCustomers, setLoadingCustomers] = useState(false);
 
   // Broadcast & Targeted Notification State
-  const [broadcastAudience, setBroadcastAudience] = useState<"all" | "gold" | "silver" | "inactive" | "single">("all");
+  const [broadcastAudience, setBroadcastAudience] = useState<"all" | "single">("all");
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
   const [broadcastTitle, setBroadcastTitle] = useState("");
   const [broadcastMessage, setBroadcastMessage] = useState("");
@@ -1557,71 +1558,33 @@ export default function AdminPage() {
 
               {/* Audience Selector with Modern Glass Pills */}
               <div>
-                <label className="block text-xs font-semibold text-neutral-800 mb-2 font-sans">
+                <label className="block text-xs font-bold text-neutral-800 mb-2 font-sans">
                   {t.audienceLabel}
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-2 gap-3 max-w-sm">
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("all")}
-                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                    className={`py-3 px-4 rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 border ${
                       broadcastAudience === "all"
-                        ? "glass-pill-active"
-                        : "glass-pill text-neutral-700"
+                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-md shadow-[#cb202d]/25"
+                        : "bg-white/80 hover:bg-white text-neutral-700 border-neutral-200/90 shadow-2xs hover:border-[#cb202d]/40"
                     }`}
                   >
-                    {t.audienceAll}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setBroadcastAudience("gold")}
-                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      broadcastAudience === "gold"
-                        ? "glass-pill-active"
-                        : "glass-pill text-amber-800 border-amber-200"
-                    }`}
-                  >
-                    <span>⭐</span>
-                    <span>{t.audienceGold}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setBroadcastAudience("silver")}
-                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      broadcastAudience === "silver"
-                        ? "glass-pill-active"
-                        : "glass-pill text-slate-700 border-slate-200"
-                    }`}
-                  >
-                    <span>🥈</span>
-                    <span>{t.audienceSilver}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setBroadcastAudience("inactive")}
-                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
-                      broadcastAudience === "inactive"
-                        ? "glass-pill-active"
-                        : "glass-pill text-neutral-600 border-neutral-200"
-                    }`}
-                  >
-                    <span>💤</span>
-                    <span>{t.audienceInactive}</span>
+                    <Users className="w-4 h-4" />
+                    <span>{t.audienceAll}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setBroadcastAudience("single")}
-                    className={`py-2 px-3.5 rounded-full text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
+                    className={`py-3 px-4 rounded-2xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 border ${
                       broadcastAudience === "single"
-                        ? "glass-pill-active"
-                        : "glass-pill text-neutral-700"
+                        ? "bg-[#cb202d] text-white border-[#cb202d] shadow-md shadow-[#cb202d]/25"
+                        : "bg-white/80 hover:bg-white text-neutral-700 border-neutral-200/90 shadow-2xs hover:border-[#cb202d]/40"
                     }`}
                   >
-                    <span>👤</span>
+                    <User className="w-4 h-4" />
                     <span>{t.audienceSingle}</span>
                   </button>
                 </div>
@@ -1657,45 +1620,52 @@ export default function AdminPage() {
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
+                <label className="block text-xs font-bold text-neutral-800 mb-1.5 font-sans">
                   {t.announcementTitle}
                 </label>
                 <input
                   type="text"
                   value={broadcastTitle}
                   onChange={(e) => setBroadcastTitle(e.target.value)}
-                  placeholder=""
-                  className="glass-input w-full"
+                  placeholder="e.g. Special Weekend Promotion or News"
+                  className="glass-input w-full font-medium"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
+                <label className="block text-xs font-bold text-neutral-800 mb-1.5 font-sans">
                   {t.notificationMessage}
                 </label>
                 <textarea
                   rows={4}
                   value={broadcastMessage}
                   onChange={(e) => setBroadcastMessage(e.target.value)}
-                  placeholder=""
-                  className="glass-input w-full resize-none"
+                  placeholder="Write your announcement or notification message details here..."
+                  className="glass-input w-full resize-none leading-relaxed"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-neutral-800 mb-1.5 font-sans">
+                <label className="block text-xs font-bold text-neutral-800 mb-1.5 font-sans">
                   {t.optionalBonus}
                 </label>
-                <input
-                  type="number"
-                  value={broadcastBonus}
-                  onChange={(e) => setBroadcastBonus(e.target.value)}
-                  placeholder="0"
-                  className="glass-input w-full"
-                />
-                <span className="text-[11px] text-neutral-500 mt-1 block font-sans">
+                <div className="relative flex items-center max-w-xs">
+                  <div className="absolute left-3.5 flex items-center gap-1 text-xs font-bold text-amber-700 pointer-events-none">
+                    <span>⭐</span>
+                    <span>Points</span>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    value={broadcastBonus}
+                    onChange={(e) => setBroadcastBonus(e.target.value)}
+                    placeholder="0"
+                    className="glass-input w-full pl-22 font-mono font-bold"
+                  />
+                </div>
+                <span className="text-[11px] text-neutral-500 mt-1.5 block font-sans">
                   {t.bonusHelp}
                 </span>
               </div>
@@ -1704,19 +1674,13 @@ export default function AdminPage() {
                 <button
                   type="submit"
                   disabled={broadcastSending}
-                  className="px-6 py-2.5 rounded-xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-2 shadow-xs cursor-pointer active:scale-98"
+                  className="px-6 py-3 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all disabled:opacity-50 flex items-center gap-2 shadow-md shadow-[#cb202d]/25 cursor-pointer active:scale-98 font-sans"
                 >
                   <Send className="w-3.5 h-3.5" />
                   {broadcastSending
                     ? t.sendingBroadcast
                     : broadcastAudience === "single"
                     ? t.sendToSingle
-                    : broadcastAudience === "gold"
-                    ? "Dispatch Promo to Gold VIPs"
-                    : broadcastAudience === "silver"
-                    ? "Dispatch Promo to Silver Members"
-                    : broadcastAudience === "inactive"
-                    ? "Dispatch Re-engagement Promo"
                     : t.sendBroadcast}
                 </button>
               </div>
