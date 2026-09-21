@@ -1,4 +1,4 @@
-﻿const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const uri = 'mongodb://xianelweibdeh_db_user:M0I6w6uB2mYnYzve@ac-4mgjq0k-shard-00-00.r4ukz73.mongodb.net:27017,ac-4mgjq0k-shard-00-01.r4ukz73.mongodb.net:27017,ac-4mgjq0k-shard-00-02.r4ukz73.mongodb.net:27017/xian_loyalty?ssl=true&replicaSet=atlas-803sle-shard-0&authSource=admin&retryWrites=true&w=majority';
@@ -49,7 +49,7 @@ async function runSeed() {
   const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
   // 1. Clean old test accounts if any
-  await User.deleteMany({ username: { $in: ["cove", "sajji", "ahmad"] } });
+  await User.deleteMany({ username: { $in: ["test-admin", "temp"] } });
 
   // 2. Upsert TenantConfig
   const configData = {

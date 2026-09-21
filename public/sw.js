@@ -1,4 +1,4 @@
-// Cove Loyalty & Rewards - Web Push Service Worker
+// xian Loyalty & Rewards - Web Push Service Worker
 self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
@@ -47,7 +47,7 @@ self.addEventListener('push', (event) => {
       url: targetUrl,
       time: Date.now(),
     },
-    tag: data.tag || 'cove-' + Date.now(),
+    tag: data.tag || 'xian-' + Date.now(),
   };
 
   event.waitUntil(

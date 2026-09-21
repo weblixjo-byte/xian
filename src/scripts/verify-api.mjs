@@ -94,7 +94,7 @@ async function runTests() {
   const adminAuthRes = await fetch(`${baseUrl}/api/auth/staff`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ role: "super_admin", email: "admin@covecoffee.com", password: "admin123" }),
+    body: JSON.stringify({ role: "super_admin", email: "admin@xianrestaurant.com", password: "admin123" }),
   });
   const adminCookie = adminAuthRes.headers.get("set-cookie");
   const adminJson = await adminAuthRes.json();
@@ -116,8 +116,8 @@ async function runTests() {
     method: "PUT",
     headers: { "Content-Type": "application/json", cookie: adminCookie || "" },
     body: JSON.stringify({
-      storeName: "Cove Coffee House",
-      tagline: "Specialty Roasters & Artisan Espresso Bar",
+      storeName: "xian",
+      tagline: "Restaurante Oriental",
       pointsPerUnit: 12,
     }),
   });

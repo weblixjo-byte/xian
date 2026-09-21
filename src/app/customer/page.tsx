@@ -95,10 +95,10 @@ interface NotificationItem {
   createdAt: string;
 }
 
-const CUSTOMER_CACHE_KEY = "cove_customer_cached";
-const CUSTOMER_ID_KEY = "cove_customer_id";
-const CUSTOMER_TOKEN_KEY = "cove_customer_token";
-const TRANSACTIONS_CACHE_KEY = "cove_transactions_cached";
+const CUSTOMER_CACHE_KEY = "xian_customer_cached";
+const CUSTOMER_ID_KEY = "xian_customer_id";
+const CUSTOMER_TOKEN_KEY = "xian_customer_token";
+const TRANSACTIONS_CACHE_KEY = "xian_transactions_cached";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -295,7 +295,7 @@ export default function CustomerPage() {
       if (res.ok) {
         setPushSubscribed(true);
         if (typeof window !== "undefined") {
-          localStorage.setItem("cove_push_subscribed", "true");
+          localStorage.setItem("xian_push_subscribed", "true");
         }
         return true;
       }
@@ -596,7 +596,7 @@ export default function CustomerPage() {
         // Immediately update state for instant responsive UI
         setPushSubscribed(true);
         if (typeof window !== "undefined") {
-          localStorage.setItem("cove_push_subscribed", "true");
+          localStorage.setItem("xian_push_subscribed", "true");
         }
 
         const reg = await navigator.serviceWorker.ready;
@@ -1131,7 +1131,7 @@ export default function CustomerPage() {
                 </div>
                 <div>
                   <span className="text-sm font-medium text-neutral-900 block">
-                    Redeem Coffee & Treats
+                    Redeem Rewards & Treats
                   </span>
                   <span className="text-xs text-neutral-500">
                     {rewards.filter((r) => r.canRedeem).length} rewards currently available with your balance

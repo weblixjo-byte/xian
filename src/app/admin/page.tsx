@@ -9,7 +9,7 @@ import {
   Users,
   User,
   Send,
-  Coffee,
+  Store,
   DollarSign,
   TrendingUp,
   Award,
@@ -336,7 +336,7 @@ export default function AdminPage() {
   useEffect(() => {
     setLang("en");
     if (typeof window !== "undefined") {
-      localStorage.setItem("cove_admin_lang", "en");
+      localStorage.setItem("xian_admin_lang", "en");
     }
   }, []);
 
@@ -774,7 +774,7 @@ export default function AdminPage() {
 
         <div className="text-center text-xs text-neutral-500 py-4 flex items-center justify-center gap-4">
           <Link href="/cashier" className="hover:text-[#cb202d] underline flex items-center gap-1 font-medium transition-colors">
-            <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
+            <Store className="w-3.5 h-3.5 text-[#cb202d]" />
             {t.openCashier}
           </Link>
           <span className="text-neutral-300">•</span>
@@ -873,7 +873,7 @@ export default function AdminPage() {
               title={t.openCashier}
               className="px-2.5 py-1.5 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50 text-xs font-medium text-neutral-800 transition-colors flex items-center gap-1 shadow-2xs"
             >
-              <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
+              <Store className="w-3.5 h-3.5 text-[#cb202d]" />
               <span className="hidden sm:inline">{t.openCashier}</span>
             </Link>
 
@@ -979,7 +979,7 @@ export default function AdminPage() {
               href="/cashier"
               className="text-xs text-[#cb202d] hover:text-[#b51a25] font-semibold flex items-center gap-1.5 transition-colors"
             >
-              <Coffee className="w-3.5 h-3.5 text-[#cb202d]" />
+              <Store className="w-3.5 h-3.5 text-[#cb202d]" />
               {t.openCashier}
             </Link>
             <div className="flex items-center gap-2">
