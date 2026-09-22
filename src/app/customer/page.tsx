@@ -5,7 +5,6 @@ import { QRCodeSVG } from "qrcode.react";
 import { useBrand } from "@/components/BrandProvider";
 import confetti from "canvas-confetti";
 import {
-  Copy,
   Check,
   Gift,
   History,
@@ -126,7 +125,6 @@ export default function CustomerPage() {
   const [rewards, setRewards] = useState<RewardItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [activeTab, setActiveTab] = useState<"card" | "rewards" | "history" | "notifications">("card");
-  const [copied, setCopied] = useState(false);
 
   // Top Temporary Toast State (Auto-dismisses in 6 seconds while preserving unread state)
   const [showTopToast, setShowTopToast] = useState(false);
@@ -647,14 +645,6 @@ export default function CustomerPage() {
     window.location.href = "/api/auth/google/login";
   };
 
-  // Copy 6-Digit PIN
-  const handleCopyPin = () => {
-    if (!customer?.rawPin) return;
-    navigator.clipboard.writeText(customer.rawPin);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   // Handle Google Sign-In & Sign-Up
   const handleGoogleAuth = async (profile: {
     name: string;
@@ -1104,35 +1094,17 @@ export default function CustomerPage() {
                 </span>
               </div>
 
-              {/* 6-Digit PIN: Bold Monospace with Quick Copy */}
+              {/* 6-Digit PIN: Bold Monospace */}
               <div className="glass-panel-subtle rounded-2xl p-4 text-center">
                 <span className="text-xs font-semibold text-neutral-600 block mb-1 font-sans">
                   Fallback 6-Digit Counter PIN
                 </span>
 
-                <div className="flex items-center justify-center gap-3">
+                <div className="flex items-center justify-center">
                   <span className="font-pin text-2xl font-bold tracking-widest text-neutral-900 select-all">
                     {customer.formattedPin}
                   </span>
-
-                  <button
-                    onClick={handleCopyPin}
-                    className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer"
-                    title="Copy PIN"
-                  >
-                    {copied ? (
-                      <Check className="w-4 h-4 text-emerald-600" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
-
-                {copied && (
-                  <span className="text-[10px] font-sans text-[#cb202d] font-semibold mt-1 block">
-                    Copied to clipboard!
-                  </span>
-                )}
               </div>
 
               {/* Live Points Counter */}
@@ -1563,34 +1535,11 @@ export default function CustomerPage() {
               <span className="text-[10px] uppercase tracking-wide font-sans font-semibold text-neutral-500 block mb-1.5">
                 Give this Code to Cashier
               </span>
-              <div className="flex items-center justify-center gap-2">
-                <div className="whitespace-nowrap flex items-center justify-center gap-2 font-pin text-2xl sm:text-3xl font-bold tracking-widest text-[#cb202d] select-all">
-                  <span>{customer.formattedPin}</span>
-                  <span className="text-neutral-400 font-normal">-</span>
-                  <span>{redeemingReward.claimCode || "10"}</span>
-                </div>
-                <button
-                  onClick={() => {
-                    const fullCode = `${customer.rawPin}-${redeemingReward.claimCode || "10"}`;
-                    navigator.clipboard.writeText(fullCode);
-                    setCopied(true);
-                    setTimeout(() => setCopied(false), 2000);
-                  }}
-                  className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-rose-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer ml-1 shrink-0"
-                  title="Copy Redemption Code"
-                >
-                  {copied ? (
-                    <Check className="w-4 h-4 text-emerald-600" />
-                  ) : (
-                    <Copy className="w-4 h-4" />
-                  )}
-                </button>
+              <div className="whitespace-nowrap flex items-center justify-center gap-2 font-pin text-2xl sm:text-3xl font-bold tracking-widest text-[#cb202d] select-all py-0.5">
+                <span>{customer.formattedPin}</span>
+                <span className="text-neutral-400 font-normal">-</span>
+                <span>{redeemingReward.claimCode || "10"}</span>
               </div>
-              {copied && (
-                <span className="text-[10px] font-sans font-medium text-[#cb202d] mt-1 block">
-                  Copied to clipboard!
-                </span>
-              )}
             </div>
 
             {/* QR Code Presentation */}
