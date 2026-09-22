@@ -470,19 +470,34 @@ export const dbService = {
 
   // Rewards
   async getRewards(activeOnly: boolean = true): Promise<IReward[]> {
+    let list: IReward[] = [];
     const { isMongoose } = await connectDB();
     if (isMongoose) {
       try {
         const filter = activeOnly ? { isActive: true } : {};
-        const list = await Reward.find(filter).sort({ pointsRequired: 1 }).lean();
-        return JSON.parse(JSON.stringify(list));
+        const docs = await Reward.find(filter).sort({ pointsRequired: 1 }).lean();
+        list = JSON.parse(JSON.stringify(docs));
       } catch (e) {
         console.warn(e);
       }
+    } else {
+      list = memoryStore.rewards
+        .filter((r) => (!activeOnly || r.isActive));
     }
-    return memoryStore.rewards
-      .filter((r) => (!activeOnly || r.isActive))
-      .sort((a, b) => a.pointsRequired - b.pointsRequired);
+
+    // Ensure strict ascending sorting by pointsRequired
+    list.sort((a, b) => a.pointsRequired - b.pointsRequired);
+
+    // Fallback dynamic calculation for legacy rewards missing claimCode
+    return list.map((r, idx) => {
+      if (!r.claimCode || !r.claimCode.trim()) {
+        return {
+          ...r,
+          claimCode: String(((idx * 7 + 11) % 90) + 10),
+        };
+      }
+      return r;
+    });
   },
 
   async findRewardById(id: string): Promise<IReward | null> {
@@ -499,7 +514,36 @@ export const dbService = {
     return found ? { ...found } : null;
   },
 
+  async findRewardByClaimCode(code: string, activeOnly: boolean = true): Promise<IReward | null> {
+    const trimmed = (code || "").trim();
+    if (!trimmed) return null;
+    const all = await this.getRewards(activeOnly);
+    return all.find((r) => r.claimCode === trimmed) || null;
+  },
+
   async createReward(data: Partial<IReward>): Promise<IReward> {
+    // Generate or validate 2-digit numeric claim code (10-99)
+    const existingRewards = await this.getRewards(false);
+    const usedCodes = new Set(existingRewards.map((r) => r.claimCode).filter(Boolean));
+    let assignedCode = "";
+    const candidateInput = (data.claimCode || "").trim();
+
+    if (/^\d{2}$/.test(candidateInput) && !usedCodes.has(candidateInput)) {
+      assignedCode = candidateInput;
+    } else {
+      // Find lowest unused 2-digit number between 10 and 99
+      for (let i = 10; i <= 99; i++) {
+        const c = String(i);
+        if (!usedCodes.has(c)) {
+          assignedCode = c;
+          break;
+        }
+      }
+      if (!assignedCode) {
+        assignedCode = "10";
+      }
+    }
+
     const { isMongoose } = await connectDB();
     if (isMongoose) {
       try {
@@ -511,6 +555,7 @@ export const dbService = {
           imageUrl: data.imageUrl || "",
           stock: data.stock !== undefined ? Number(data.stock) : 999,
           isActive: data.isActive !== undefined ? Boolean(data.isActive) : true,
+          claimCode: assignedCode,
           redemptionCount: 0,
         });
         return JSON.parse(JSON.stringify(r.toObject()));
@@ -528,6 +573,7 @@ export const dbService = {
       imageUrl: data.imageUrl || "",
       isActive: data.isActive !== undefined ? data.isActive : true,
       stock: data.stock !== undefined ? data.stock : 999,
+      claimCode: assignedCode,
       redemptionCount: 0,
       createdAt: new Date().toISOString(),
     };

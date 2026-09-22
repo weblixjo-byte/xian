@@ -84,6 +84,7 @@ interface RewardItem {
   category: string;
   imageUrl?: string;
   canRedeem: boolean;
+  claimCode?: string;
 }
 
 interface NotificationItem {
@@ -1240,17 +1241,22 @@ export default function CustomerPage() {
                         </span>
                       </div>
 
-                      {/* Category Tag */}
-                      <div className="absolute top-3.5 start-3.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-neutral-900 shadow-xs border border-neutral-200 font-sans">
-                        {reward.category === "Drinks"
-                          ? "Beverages"
-                          : reward.category === "Food"
-                          ? "Food & Pastries"
-                          : reward.category === "Beans"
-                          ? "Specialty Beans"
-                          : reward.category === "Merchandise"
-                          ? "Merchandise"
-                          : reward.category}
+                      {/* Category & Claim Code Tags */}
+                      <div className="absolute top-3.5 start-3.5 flex items-center gap-1.5">
+                        <div className="px-3 py-1 rounded-full text-[11px] font-semibold bg-white/95 backdrop-blur-xs text-neutral-900 shadow-xs border border-neutral-200 font-sans">
+                          {reward.category === "Drinks"
+                            ? "Beverages"
+                            : reward.category === "Food"
+                            ? "Food & Pastries"
+                            : reward.category === "Beans"
+                            ? "Specialty Beans"
+                            : reward.category === "Merchandise"
+                            ? "Merchandise"
+                            : reward.category}
+                        </div>
+                        <div className="px-2.5 py-1 rounded-full text-[11px] font-mono font-black bg-[#0A52A9] text-[#F4EECF] shadow-xs" title="Reward Claim Code">
+                          #{reward.claimCode || "10"}
+                        </div>
                       </div>
                     </div>
 
@@ -1559,17 +1565,28 @@ export default function CustomerPage() {
 
             {/* Prominent Counter Code Box */}
             <div className="glass-panel-subtle border-2 border-[#cb202d]/30 rounded-2xl p-4 mb-3 text-center shadow-xs">
-              <span className="text-[10px] uppercase tracking-wide font-sans font-semibold text-neutral-500 block mb-1">
-                Give this 6-Digit Code to Cashier
+              <span className="text-[10px] uppercase tracking-wide font-sans font-semibold text-neutral-500 block mb-1.5">
+                Give this Code to Cashier
               </span>
-              <div className="flex items-center justify-center gap-3">
-                <span className="font-pin text-3xl font-bold tracking-widest text-[#cb202d] select-all">
-                  {customer.formattedPin}
-                </span>
+              <div className="flex items-center justify-center gap-2">
+                <div className="whitespace-nowrap flex items-center justify-center gap-1.5 font-pin select-all text-neutral-900">
+                  <span className="text-2xl sm:text-3xl font-bold tracking-widest text-[#cb202d]">
+                    {customer.formattedPin}
+                  </span>
+                  <span className="text-neutral-400 font-bold text-xl sm:text-2xl">-</span>
+                  <span className="bg-[#0A52A9] text-[#F4EECF] px-2 py-0.5 rounded-lg font-mono font-black text-xl sm:text-2xl shadow-xs">
+                    {redeemingReward.claimCode || "10"}
+                  </span>
+                </div>
                 <button
-                  onClick={handleCopyPin}
-                  className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-rose-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer"
-                  title="Copy PIN"
+                  onClick={() => {
+                    const fullCode = `${customer.rawPin}-${redeemingReward.claimCode || "10"}`;
+                    navigator.clipboard.writeText(fullCode);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="p-1.5 rounded-lg border border-neutral-200 bg-white hover:bg-rose-50 text-neutral-600 transition-colors active:scale-95 cursor-pointer ml-1 shrink-0"
+                  title="Copy Redemption Code"
                 >
                   {copied ? (
                     <Check className="w-4 h-4 text-emerald-600" />
@@ -1589,7 +1606,7 @@ export default function CustomerPage() {
             <div className="flex flex-col items-center justify-center mb-4">
               <div className="p-2.5 bg-white rounded-xl border border-neutral-200 shadow-2xs">
                 <QRCodeSVG
-                  value={customer.qrSecret}
+                  value={`${customer.qrSecret}:CLAIM:${redeemingReward.claimCode || "10"}`}
                   size={120}
                   level="H"
                   includeMargin={false}
@@ -1597,7 +1614,7 @@ export default function CustomerPage() {
                 />
               </div>
               <span className="text-[10px] text-neutral-500 font-sans mt-1.5">
-                Or scan customer QR on POS terminal
+                Scan reward QR on POS terminal
               </span>
             </div>
 

@@ -298,6 +298,7 @@ export default function AdminPage() {
     category: "Drinks",
     imageUrl: "",
     stock: 999,
+    claimCode: "",
   });
   const [createRewardLoading, setCreateRewardLoading] = useState(false);
   const [createRewardError, setCreateRewardError] = useState<string | null>(null);
@@ -580,7 +581,7 @@ export default function AdminPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setShowAddRewardModal(false);
-        setNewReward({ title: "", description: "", pointsRequired: 100, category: "Drinks", imageUrl: "", stock: 999 });
+        setNewReward({ title: "", description: "", pointsRequired: 100, category: "Drinks", imageUrl: "", stock: 999, claimCode: "" });
         await loadRewards();
       } else {
         setCreateRewardError(data.error || "Failed to save reward. Please check required fields.");
@@ -1388,9 +1389,14 @@ export default function AdminPage() {
                           <span className="text-[10px] opacity-90 uppercase font-sans">pts</span>
                         </div>
 
-                        {/* Category Floating Badge */}
-                        <div className="absolute top-3 start-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-xs text-neutral-900 border border-neutral-200 text-[10px] font-semibold shadow-2xs">
-                          {reward.category}
+                        {/* Category & Claim Code Floating Badges */}
+                        <div className="absolute top-3 start-3 flex items-center gap-1.5">
+                          <div className="px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-xs text-neutral-900 border border-neutral-200 text-[10px] font-semibold shadow-2xs">
+                            {reward.category}
+                          </div>
+                          <div className="px-2.5 py-1 rounded-full bg-[#0A52A9] text-[#F4EECF] font-mono text-[10px] font-black shadow-2xs">
+                            CODE: {reward.claimCode || "10"}
+                          </div>
                         </div>
                       </div>
 
@@ -1859,6 +1865,28 @@ export default function AdminPage() {
                     ]}
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-neutral-900 mb-1 font-sans">
+                  Claim Code (2 Digits: 10 - 99)
+                </label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={2}
+                  value={newReward.claimCode}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 2);
+                    setNewReward({ ...newReward, claimCode: val });
+                  }}
+                  placeholder="Auto (e.g. 25)"
+                  className="glass-input w-full font-mono font-bold"
+                />
+                <span className="text-[11px] text-neutral-400 mt-1 block font-sans">
+                  Leave blank to auto-generate an unused 2-digit number (10-99).
+                </span>
               </div>
 
               <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-neutral-200/60">
