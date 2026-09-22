@@ -2,9 +2,11 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { dbService } from "@/lib/db";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(req: Request) {
   try {
-    const session = await getSession();
+    const session = await getSession(req);
     const rewards = await dbService.getRewards(true);
     let userPoints = 0;
 
@@ -13,14 +15,21 @@ export async function GET() {
       if (user) userPoints = user.pointsBalance;
     }
 
-    return NextResponse.json({
-      success: true,
-      rewards: rewards.map((r) => ({
-        ...r,
-        canRedeem: userPoints >= r.pointsRequired,
-      })),
-      userPoints,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        rewards: rewards.map((r) => ({
+          ...r,
+          canRedeem: userPoints >= r.pointsRequired,
+        })),
+        userPoints,
+      },
+      {
+        headers: {
+          "Cache-Control": "private, no-cache, no-store, must-revalidate",
+        },
+      }
+    );
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

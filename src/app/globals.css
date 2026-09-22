@@ -159,3 +159,39 @@ h1, h2, h3, h4, h5, h6, .font-serif, .font-brand, .font-subbrand {
 ::-webkit-scrollbar-thumb:hover {
   background: #cb202d;
 }
+
+/* Xian Brand Smooth 3-Dot Animated Loader */
+@keyframes xianDotBounce {
+  0%, 80%, 100% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0.35;
+  }
+  40% {
+    transform: translateY(-8px) scale(1.15);
+    opacity: 1;
+    box-shadow: 0 4px 12px rgba(203, 32, 45, 0.45);
+  }
+}
+
+.xian-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background-color: #cb202d;
+  display: inline-block;
+}
+
+.xian-dot-1 {
+  animation: xianDotBounce 1.35s infinite cubic-bezier(0.45, 0, 0.55, 1);
+  animation-delay: -0.32s;
+}
+
+.xian-dot-2 {
+  animation: xianDotBounce 1.35s infinite cubic-bezier(0.45, 0, 0.55, 1);
+  animation-delay: -0.16s;
+}
+
+.xian-dot-3 {
+  animation: xianDotBounce 1.35s infinite cubic-bezier(0.45, 0, 0.55, 1);
+  animation-delay: 0s;
+}
