@@ -751,16 +751,27 @@ export default function AdminPage() {
     setTicketSuccess(null);
     setTicketError(null);
 
-    try {
-      const systemInfo =
-        typeof window !== "undefined"
-          ? `Device: ${navigator.userAgent.slice(0, 100)} | Screen: ${window.innerWidth}x${window.innerHeight} | Host: ${window.location.host}`
-          : "N/A";
-      const ticketId = `XIAN-TK-${Math.floor(1000 + Math.random() * 9000)}`;
+    const systemInfo =
+      typeof window !== "undefined"
+        ? `OS: ${navigator.platform} | Browser: ${navigator.userAgent.slice(0, 120)} | Screen: ${screen.width}x${screen.height} | Viewport: ${window.innerWidth}x${window.innerHeight} | URL: ${window.location.href} | Time: ${new Date().toISOString()}`
+        : "N/A";
+    const ticketId = `XIAN-TK-${Math.floor(1000 + Math.random() * 9000)}`;
+    const payload = {
+      title: ticketTitle.trim(),
+      category: `${ticketCategory} (${ticketCategoryDesc})`,
+      urgency: "Medium",
+      message: ticketMessage.trim(),
+      reporterName: admin?.name || "Store Admin",
+      reporterContact: ticketPhone.trim() || admin?.email || "info@weblix-jo.com",
+      systemInfo,
+      ticketId,
+    };
 
-      const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-      };
+    let succeeded = false;
+
+    // Primary: internal API route
+    try {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (typeof window !== "undefined") {
         const savedToken = localStorage.getItem(ADMIN_TOKEN_KEY);
         if (savedToken) {
@@ -768,39 +779,53 @@ export default function AdminPage() {
           headers["Authorization"] = `Bearer ${savedToken}`;
         }
       }
-
       const res = await fetch("/api/admin/ticket", {
         method: "POST",
         headers,
-        body: JSON.stringify({
-          title: ticketTitle.trim(),
-          category: `${ticketCategory} (${ticketCategoryDesc})`,
-          urgency: "Medium",
-          message: ticketMessage.trim(),
-          reporterName: admin?.name || "Store Admin",
-          reporterContact: ticketPhone.trim() || admin?.email || "info@weblix-jo.com",
-          systemInfo,
-          ticketId,
-        }),
+        body: JSON.stringify(payload),
       });
-
       const data = await res.json();
       if (res.ok && data.success) {
+        succeeded = true;
         setTicketRefNumber(data.ticketId || ticketId);
-        setTicketSuccess("Support ticket successfully dispatched to Weblix engineering team!");
-        confetti({ particleCount: 45, spread: 65 });
-        setTicketTitle("");
-        setTicketMessage("");
-        setTicketPhone("");
-      } else {
-        setTicketError(data.error || "Failed to dispatch ticket. Please try again.");
       }
-    } catch (err: any) {
-      console.error("Ticket submission error:", err);
-      setTicketError(err.message || "Network error. Please try again.");
-    } finally {
-      setTicketSubmitting(false);
+    } catch (_) {
+      // fall through to client-side fallback
     }
+
+    // Fallback: direct Web3Forms submission
+    if (!succeeded) {
+      try {
+        const w3Res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            access_key: "7f0e27f4-7df7-4105-af7a-985d05cc02d1",
+            subject: `[${ticketId}] ${payload.title}`,
+            from_name: payload.reporterName,
+            message: `Category: ${payload.category}\n\nDescription:\n${payload.message}\n\nContact: ${payload.reporterContact}\n\nSystem:\n${systemInfo}`,
+          }),
+        });
+        const w3Data = await w3Res.json();
+        if (w3Data.success) {
+          succeeded = true;
+          setTicketRefNumber(ticketId);
+        }
+      } catch (_) {
+        // both paths failed
+      }
+    }
+
+    if (succeeded) {
+      setTicketSuccess("dispatched");
+      confetti({ particleCount: 45, spread: 65 });
+      setTicketTitle("");
+      setTicketMessage("");
+      setTicketPhone("");
+    } else {
+      setTicketError("Unable to send ticket. Please check your connection and try again.");
+    }
+    setTicketSubmitting(false);
   };
 
   if (loadingSession) {
@@ -1782,217 +1807,224 @@ export default function AdminPage() {
 
         {/* TAB 6: SUPPORT TICKET & ISSUE TRACKER (Web3Forms to info@weblix-jo.com) */}
         {activeTab === "support" && (
-          <div className="space-y-6 max-w-4xl mx-auto animate-in fade-in duration-300">
-            {/* Header: Exact match to screenshot */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-[#cb202d] text-white flex items-center justify-center shadow-xs shrink-0">
+          <div className="space-y-6 max-w-3xl mx-auto animate-in fade-in duration-300">
+
+            {/* ── HEADER ── */}
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#cb202d] text-white flex items-center justify-center shadow-lg shadow-[#cb202d]/30 shrink-0">
                   <LifeBuoy className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-neutral-900 font-sans tracking-tight">
-                    Technical Support & Issue Tickets
+                  <h2 className="text-xl font-bold text-neutral-900 font-sans tracking-tight leading-tight">
+                    Technical Support
                   </h2>
                   <p className="text-xs text-neutral-500 font-sans mt-0.5">
-                    Submit bugs, POS glitches, or technical requests directly to the engineering team.
+                    Report bugs, POS issues, or technical requests to the engineering team.
                   </p>
                 </div>
               </div>
-
               <div className="self-start sm:self-auto shrink-0">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-mono">
+                <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-mono tracking-wide">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Direct Line: info@weblix-jo.com</span>
-                </div>
+                  Direct Line: info@weblix-jo.com
+                </span>
               </div>
             </div>
 
-            {/* Success Confirmation Card */}
+            {/* ── SUCCESS SCREEN ── */}
             {ticketSuccess && (
-              <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-emerald-200 bg-emerald-50/20 animate-in zoom-in-95 duration-200">
-                <div className="flex flex-col items-center text-center max-w-md mx-auto space-y-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#cb202d] text-white flex items-center justify-center shadow-md">
-                    <CheckCircle2 className="w-8 h-8" />
+              <div className="glass-panel rounded-3xl p-8 sm:p-12 border border-[#EBD3C8] animate-in zoom-in-95 duration-300">
+                <div className="flex flex-col items-center text-center max-w-sm mx-auto space-y-5">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-2xl bg-[#cb202d] text-white flex items-center justify-center shadow-xl shadow-[#cb202d]/30">
+                      <CheckCircle2 className="w-8 h-8" />
+                    </div>
+                    <div className="absolute -inset-1 rounded-2xl bg-[#cb202d]/10 -z-10 blur-md" />
                   </div>
-
-                  <div>
-                    <span className="text-xs font-mono font-bold text-neutral-800 uppercase tracking-wider bg-rose-50 px-3 py-1 rounded-full border border-rose-100 inline-block mb-2">
-                      Reference #{ticketRefNumber}
+                  <div className="space-y-2">
+                    <span className="inline-block px-4 py-1 rounded-full bg-[#cb202d]/10 border border-[#cb202d]/25 text-[#cb202d] text-[11px] font-mono font-bold tracking-widest uppercase">
+                      {ticketRefNumber}
                     </span>
-                    <h3 className="text-lg font-bold text-neutral-900 font-sans">
-                      Ticket Dispatched Successfully!
+                    <h3 className="text-xl font-bold text-neutral-900 font-sans">
+                      Ticket Dispatched!
                     </h3>
-                    <p className="text-xs text-neutral-600 mt-1.5 font-sans leading-relaxed">
-                      Your ticket has been sent directly to <strong>info@weblix-jo.com</strong> via Web3Forms. The engineering team will review it and resolve the issue promptly.
+                    <p className="text-xs text-neutral-500 font-sans leading-relaxed">
+                      Your report has been sent to <strong className="text-neutral-700">info@weblix-jo.com</strong>.<br />
+                      The engineering team will review and respond promptly.
                     </p>
                   </div>
-
-                  <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 w-full">
+                  <div className="pt-2 w-full flex flex-col sm:flex-row gap-3">
                     <button
                       type="button"
-                      onClick={() => {
-                        setTicketSuccess(null);
-                        setTicketRefNumber(null);
-                      }}
-                      className="w-full sm:flex-1 py-3 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-98 font-sans"
+                      onClick={() => { setTicketSuccess(null); setTicketRefNumber(null); }}
+                      className="flex-1 py-3 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-xs font-bold transition-all shadow-md shadow-[#cb202d]/25 cursor-pointer active:scale-[0.98] font-sans"
                     >
                       Submit Another Ticket
                     </button>
                     <button
                       type="button"
                       onClick={() => setActiveTab("analytics")}
-                      className="w-full sm:flex-1 py-3 rounded-2xl bg-white hover:bg-neutral-50 text-neutral-700 text-xs font-semibold border border-neutral-200 transition-all cursor-pointer font-sans"
+                      className="flex-1 py-3 rounded-2xl bg-white/70 hover:bg-white border border-[#EBD3C8] text-neutral-700 text-xs font-semibold transition-all cursor-pointer font-sans backdrop-blur-sm"
                     >
-                      Back to Analytics
+                      Back to Dashboard
                     </button>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Main Form Card: Exact match to user screenshot with brand colors */}
+            {/* ── MAIN FORM CARD ── */}
             {!ticketSuccess && (
-              <div className="bg-white border border-neutral-200/90 rounded-3xl p-6 sm:p-8 shadow-xs relative">
-                {ticketError && (
-                  <div className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center gap-3 font-sans">
-                    <AlertCircle className="w-5 h-5 shrink-0 text-[#cb202d]" />
-                    <span>{ticketError}</span>
-                  </div>
-                )}
+              <div className="glass-panel rounded-3xl border border-[#EBD3C8] shadow-xl shadow-black/[0.04] relative overflow-visible">
+                <div className="h-1 w-full rounded-t-3xl bg-gradient-to-r from-[#cb202d] via-[#e8505a] to-[#cb202d]/40" />
+                <div className="p-6 sm:p-8">
+                  {ticketError && (
+                    <div className="mb-6 p-4 rounded-2xl bg-rose-50/80 border border-rose-200 text-xs text-rose-800 flex items-center gap-3 font-sans backdrop-blur-sm">
+                      <AlertCircle className="w-4 h-4 shrink-0 text-[#cb202d]" />
+                      <span>{ticketError}</span>
+                    </div>
+                  )}
 
-                <form onSubmit={handleTicketSubmit} className="space-y-6">
-                  {/* ISSUE CATEGORY */}
-                  <div className="relative">
-                    <label className="block text-[11px] font-bold text-neutral-700 tracking-wider font-mono uppercase mb-2">
-                      Issue Category
-                    </label>
+                  <form onSubmit={handleTicketSubmit} className="space-y-5">
 
-                    {/* Category Box / Dropdown Trigger */}
+                    {/* ISSUE CATEGORY */}
                     <div
-                      onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                      className="w-full bg-white border border-neutral-200 hover:border-[#cb202d]/50 focus:border-[#cb202d] rounded-2xl px-4 py-3.5 flex items-center justify-between cursor-pointer transition-all shadow-2xs"
+                      className="relative"
+                      onBlur={(e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget as Node))
+                          setShowCategoryDropdown(false);
+                      }}
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 text-left min-w-0">
-                        <span className="font-bold text-sm text-neutral-900 font-sans">
-                          {ticketCategory}
-                        </span>
-                        <span className="text-xs text-neutral-400 font-mono truncate">
-                          {ticketCategoryDesc}
-                        </span>
-                      </div>
-                      <ChevronDown
-                        className={`w-4 h-4 text-neutral-400 shrink-0 transition-transform duration-200 ${
-                          showCategoryDropdown ? "rotate-180" : ""
-                        }`}
+                      <label className="block text-[10px] font-bold text-neutral-500 tracking-widest font-mono uppercase mb-2 px-1">
+                        Issue Category
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                        className={`w-full glass-input flex items-center justify-between px-4 py-3.5 rounded-2xl text-left transition-all cursor-pointer ${showCategoryDropdown ? "border-[#cb202d]/60 ring-4 ring-[#cb202d]/10" : "hover:border-[#cb202d]/30"}`}
+                      >
+                        <div className="min-w-0">
+                          <span className="block font-semibold text-sm text-neutral-900 font-sans truncate">
+                            {ticketCategory}
+                          </span>
+                          <span className="block text-[11px] text-neutral-400 font-mono truncate mt-0.5">
+                            {ticketCategoryDesc}
+                          </span>
+                        </div>
+                        <ChevronDown
+                          className={`w-4 h-4 shrink-0 ml-3 transition-transform duration-200 ${showCategoryDropdown ? "rotate-180 text-[#cb202d]" : "text-neutral-400"}`}
+                        />
+                      </button>
+                      {showCategoryDropdown && (
+                        <div className="absolute top-full start-0 end-0 mt-2 rounded-2xl border border-[#EBD3C8] bg-white/90 backdrop-blur-xl shadow-2xl z-40 overflow-hidden py-1.5 animate-in fade-in zoom-in-95 duration-150">
+                          {ticketCategories.map((cat) => {
+                            const isSelected = ticketCategory === cat.title;
+                            return (
+                              <button
+                                key={cat.title}
+                                type="button"
+                                tabIndex={0}
+                                onClick={() => {
+                                  setTicketCategory(cat.title);
+                                  setTicketCategoryDesc(cat.desc);
+                                  setShowCategoryDropdown(false);
+                                }}
+                                className={`w-full px-4 py-3 text-left flex items-center justify-between gap-3 transition-colors cursor-pointer font-sans ${isSelected ? "bg-rose-50/60" : "hover:bg-[#FAF5F2]"}`}
+                              >
+                                <div className="min-w-0">
+                                  <span className={`block font-bold text-sm ${isSelected ? "text-[#cb202d]" : "text-neutral-800"}`}>
+                                    {cat.title}
+                                  </span>
+                                  <span className="block text-[11px] text-neutral-400 font-mono mt-0.5 truncate">
+                                    {cat.desc}
+                                  </span>
+                                </div>
+                                {isSelected && (
+                                  <CheckCircle2 className="w-4 h-4 text-[#cb202d] shrink-0" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* ── SUBJECT ── */}
+                    <div>
+                      <label className="block text-[10px] font-bold text-neutral-500 tracking-widest font-mono uppercase mb-2 px-1">
+                        Subject
+                      </label>
+                      <input
+                        type="text"
+                        value={ticketTitle}
+                        onChange={(e) => setTicketTitle(e.target.value)}
+                        placeholder="Brief summary of the issue..."
+                        className="glass-input w-full px-4 py-3.5 rounded-2xl text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all focus:border-[#cb202d]/60 focus:ring-4 focus:ring-[#cb202d]/10"
+                        required
                       />
                     </div>
 
-                    {/* Custom Dropdown Menu */}
-                    {showCategoryDropdown && (
-                      <div className="absolute top-full start-0 end-0 mt-2 bg-white border border-neutral-200 rounded-2xl shadow-xl overflow-hidden z-30 py-1 divide-y divide-neutral-100 animate-in fade-in zoom-in-95 duration-150">
-                        {ticketCategories.map((cat) => {
-                          const isSelected = ticketCategory === cat.title;
-                          return (
-                            <button
-                              key={cat.title}
-                              type="button"
-                              onClick={() => {
-                                setTicketCategory(cat.title);
-                                setTicketCategoryDesc(cat.desc);
-                                setShowCategoryDropdown(false);
-                              }}
-                              className={`w-full px-4 py-3 text-left flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 transition-colors cursor-pointer hover:bg-neutral-50 ${
-                                isSelected ? "bg-rose-50/60" : ""
-                              }`}
-                            >
-                              <span
-                                className={`font-bold text-sm font-sans ${
-                                  isSelected ? "text-[#cb202d]" : "text-neutral-900"
-                                }`}
-                              >
-                                {cat.title}
-                              </span>
-                              <span className="text-xs text-neutral-400 font-mono">
-                                {cat.desc}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
+                    {/* ── DESCRIPTION ── */}
+                    <div>
+                      <label className="block text-[10px] font-bold text-neutral-500 tracking-widest font-mono uppercase mb-2 px-1">
+                        Detailed Description
+                      </label>
+                      <textarea
+                        rows={5}
+                        value={ticketMessage}
+                        onChange={(e) => setTicketMessage(e.target.value)}
+                        placeholder="Describe the issue in detail — steps to reproduce, error messages, or what needs fixing..."
+                        className="glass-input w-full px-4 py-3.5 rounded-2xl text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all focus:border-[#cb202d]/60 focus:ring-4 focus:ring-[#cb202d]/10 resize-none leading-relaxed"
+                        required
+                      />
+                    </div>
 
-                  {/* SUBJECT / SUMMARY */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-700 tracking-wider font-mono uppercase mb-2">
-                      Subject / Summary
-                    </label>
-                    <input
-                      type="text"
-                      value={ticketTitle}
-                      onChange={(e) => setTicketTitle(e.target.value)}
-                      placeholder="Brief summary of the issue or inquiry..."
-                      className="w-full bg-white border border-neutral-200 hover:border-[#cb202d]/50 focus:border-[#cb202d] focus:ring-4 focus:ring-[#cb202d]/10 rounded-2xl px-4 py-3 sm:py-3.5 text-sm text-neutral-900 placeholder:text-neutral-400 transition-all outline-none font-sans"
-                      required
-                    />
-                  </div>
+                    {/* ── PHONE / WHATSAPP ── */}
+                    <div>
+                      <label className="block text-[10px] font-bold text-neutral-500 tracking-widest font-mono uppercase mb-2 px-1">
+                        Phone / WhatsApp{" "}
+                        <span className="text-neutral-400 normal-case font-sans font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={ticketPhone}
+                        onChange={(e) => setTicketPhone(e.target.value)}
+                        placeholder="+962 7X XXX XXXX"
+                        className="glass-input w-full px-4 py-3.5 rounded-2xl text-sm text-neutral-900 placeholder:text-neutral-400 outline-none transition-all focus:border-[#cb202d]/60 focus:ring-4 focus:ring-[#cb202d]/10 font-mono"
+                      />
+                    </div>
 
-                  {/* DETAILED DESCRIPTION */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-700 tracking-wider font-mono uppercase mb-2">
-                      Detailed Description
-                    </label>
-                    <textarea
-                      rows={6}
-                      value={ticketMessage}
-                      onChange={(e) => setTicketMessage(e.target.value)}
-                      placeholder="Explain what happened in detail: steps to reproduce, customer PIN or reward code (if relevant), error messages, or what needs fixing..."
-                      className="w-full bg-white border border-neutral-200 hover:border-[#cb202d]/50 focus:border-[#cb202d] focus:ring-4 focus:ring-[#cb202d]/10 rounded-2xl p-4 text-sm text-neutral-900 placeholder:text-neutral-400 transition-all outline-none font-sans leading-relaxed resize-none"
-                      required
-                    />
-                  </div>
+                    {/* ── FOOTER ── */}
+                    <div className="pt-1 border-t border-[#EBD3C8]/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <span className="text-[11px] text-neutral-400 font-sans order-2 sm:order-1">
+                        Dispatched to engineering team via Web3Forms.
+                      </span>
+                      <button
+                        type="submit"
+                        disabled={ticketSubmitting}
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-sm font-bold transition-all shadow-lg shadow-[#cb202d]/30 disabled:opacity-60 flex items-center justify-center gap-2.5 cursor-pointer active:scale-[0.98] font-sans order-1 sm:order-2 min-w-[200px]"
+                      >
+                        {ticketSubmitting ? (
+                          <span className="flex items-center gap-1.5 py-0.5">
+                            <span className="xian-dot xian-dot-1 !bg-white" />
+                            <span className="xian-dot xian-dot-2 !bg-white" />
+                            <span className="xian-dot xian-dot-3 !bg-white" />
+                          </span>
+                        ) : (
+                          <>
+                            <Send className="w-3.5 h-3.5" />
+                            Submit Support Ticket
+                          </>
+                        )}
+                      </button>
+                    </div>
 
-                  {/* PHONE / WHATSAPP (OPTIONAL) */}
-                  <div>
-                    <label className="block text-[11px] font-bold text-neutral-700 tracking-wider font-mono uppercase mb-2">
-                      Phone / WhatsApp (Optional)
-                    </label>
-                    <input
-                      type="text"
-                      value={ticketPhone}
-                      onChange={(e) => setTicketPhone(e.target.value)}
-                      placeholder="+962  7X  XXX  XXXX"
-                      className="w-full bg-white border border-neutral-200 hover:border-[#cb202d]/50 focus:border-[#cb202d] focus:ring-4 focus:ring-[#cb202d]/10 rounded-2xl px-4 py-3 sm:py-3.5 text-sm text-neutral-900 placeholder:text-neutral-400 transition-all outline-none font-mono"
-                    />
-                  </div>
-
-                  {/* Footer Row */}
-                  <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <span className="text-xs text-neutral-400 font-sans order-2 sm:order-1 text-center sm:text-left">
-                      Dispatched directly to engineering team via Web3Forms.
-                    </span>
-
-                    <button
-                      type="submit"
-                      disabled={ticketSubmitting}
-                      className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-sm font-bold transition-all shadow-md shadow-[#cb202d]/25 disabled:opacity-50 flex items-center justify-center gap-2.5 cursor-pointer active:scale-98 font-sans order-1 sm:order-2"
-                    >
-                      {ticketSubmitting ? (
-                        <>
-                          <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                          <span>Submitting Support Ticket...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4" />
-                          <span>Submit Support Ticket</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             )}
+
           </div>
         )}
       </main>
