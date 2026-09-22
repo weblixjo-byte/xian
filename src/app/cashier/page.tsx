@@ -736,7 +736,7 @@ export default function CashierPage() {
                     {/* Separator dash */}
                     <span className="text-neutral-400 font-bold text-lg sm:text-xl px-0.5">-</span>
 
-                    {/* 2 Claim Code digits */}
+                    {/* 2 Claim Code digits (Unified style) */}
                     <div className="flex gap-1 sm:gap-1.5">
                       {[6, 7].map((idx) => {
                         const char = pinQuery[idx];
@@ -745,9 +745,9 @@ export default function CashierPage() {
                             key={idx}
                             className={`w-9 h-12 sm:w-11 sm:h-14 rounded-xl border-2 flex items-center justify-center text-lg sm:text-xl font-bold font-mono transition-all ${
                               char
-                                ? "border-[#0A52A9] bg-[#0A52A9]/10 text-[#0A52A9]"
+                                ? "border-[#cb202d] bg-rose-50 text-[#cb202d]"
                                 : idx === pinQuery.length
-                                ? "border-[#0A52A9] bg-white animate-pulse"
+                                ? "border-[#cb202d] bg-white animate-pulse"
                                 : "border-neutral-200 bg-neutral-50/50 text-neutral-300"
                             }`}
                           >
@@ -758,13 +758,8 @@ export default function CashierPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center gap-4 text-[11px] text-neutral-400 font-medium">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-[#cb202d]" /> 6-Digit PIN
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 rounded-full bg-[#0A52A9]" /> 2-Digit Reward Code
-                    </span>
+                  <div className="text-center text-[11px] text-neutral-400 font-medium font-sans">
+                    <span>6 Digits (Points Credit) • 8 Digits (Reward Redemption)</span>
                   </div>
                 </div>
 
@@ -810,11 +805,7 @@ export default function CashierPage() {
                   type="button"
                   onClick={() => performLookup(pinQuery)}
                   disabled={lookupLoading || (pinQuery.length !== 6 && pinQuery.length !== 8)}
-                  className={`w-full py-3.5 rounded-2xl text-white text-sm font-bold transition-all disabled:opacity-40 cursor-pointer shadow-xs flex items-center justify-center gap-2 active:scale-98 font-sans ${
-                    pinQuery.length === 8
-                      ? "bg-[#0A52A9] hover:bg-[#084287]"
-                      : "bg-[#cb202d] hover:bg-[#b51a25]"
-                  }`}
+                  className="w-full py-3.5 rounded-2xl bg-[#cb202d] hover:bg-[#b51a25] text-white text-sm font-bold transition-all disabled:opacity-40 cursor-pointer shadow-xs flex items-center justify-center gap-2 active:scale-98 font-sans"
                 >
                   {lookupLoading ? (
                     <>
@@ -1184,7 +1175,7 @@ export default function CashierPage() {
               <div className="glass-panel rounded-3xl p-5 sm:p-6 shadow-lg space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-xl bg-[#0A52A9] text-white flex items-center justify-center shadow-xs">
+                    <div className="w-8 h-8 rounded-xl bg-[#cb202d] text-white flex items-center justify-center shadow-xs">
                       <Gift className="w-4 h-4" />
                     </div>
                     <div>
@@ -1192,12 +1183,12 @@ export default function CashierPage() {
                         Redeem Verified Reward
                       </h4>
                       <p className="text-[11px] text-neutral-500 font-sans">
-                        Direct claim code redemption
+                        Direct code redemption
                       </p>
                     </div>
                   </div>
-                  <span className="px-2.5 py-1 rounded-lg bg-[#0A52A9] text-[#F4EECF] font-mono font-black text-xs shadow-2xs">
-                    CODE #{lockedReward.claimCode || "10"}
+                  <span className="px-2.5 py-1 rounded-lg bg-rose-50 text-[#cb202d] border border-rose-100 font-mono font-bold text-xs shadow-2xs">
+                    Code #{lockedReward.claimCode || "10"}
                   </span>
                 </div>
 
